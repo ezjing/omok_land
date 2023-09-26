@@ -14,7 +14,7 @@ const Chat = () => {
                                 //컴포넌트가 변경될 때 객체가 유지되어야하므로 'ref'로 저장
 
     const msgBox = chatt.map((item, idx) => (
-        <div key={idx} className={item.name === name ? 'me' : 'other'}>
+        <div key={idx} className={item.name === name ? 'me' : 'other'} id={'msg-box'}>
             <span><b>{item.name}</b></span> [ {item.date} ]<br/>
             <span>{item.msg}</span>
         </div>
@@ -105,7 +105,7 @@ const Chat = () => {
             <GlobalStyle/>
             <div id="chat-wrap">
                 <div id='chatt'>
-                    <h1 id="title">WebSocket Chatting</h1>
+                    <h1 id="title">오목랜드 채팅방</h1>
                     <br/>
                     <div id='talk'>
                         <div className='talk-shadow'></div>
@@ -116,11 +116,11 @@ const Chat = () => {
                            type='text'
                            id='name'
                            value={name}
-                           onChange={(event => setName(event.target.value))}/>
+                           onChange={(event => setName(event.target.value))} />
                     <div id='sendZone'>
                         <textarea id='msg' value={msg} onChange={onText}
                                   onKeyDown={(ev) => {if(ev.keyCode === 13){send();}}}></textarea>
-                        <input type='button' value='전송' id='btnSend' onClick={send}/>
+                        <input type='button' value='전송' id='btnSend' onClick={send} className={'btn'}/>
                     </div>
                 </div>
             </div>
