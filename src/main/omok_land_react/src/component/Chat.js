@@ -9,6 +9,7 @@ const Chat = () => {
     const [chatt, setChatt] = useState([]);
     const [chkLog, setChkLog] = useState(false);
     const [socketData, setSocketData] = useState();
+    const [ip, setIp] = useState('1234');
 
     const ws = useRef(null);    //webSocket을 담는 변수,
                                 //컴포넌트가 변경될 때 객체가 유지되어야하므로 'ref'로 저장
@@ -47,7 +48,7 @@ const Chat = () => {
 
 
     const webSocketLogin = useCallback(() => {
-        ws.current = new WebSocket("ws://localhost:8080/socket/chatt");
+        ws.current = new WebSocket("ws://localhost:8080/socket/chatt/" + ip);
 
         ws.current.onmessage = (message) => {
             const dataSet = JSON.parse(message.data);

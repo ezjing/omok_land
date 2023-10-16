@@ -13,10 +13,12 @@ import java.io.IOException;
 import java.util.*;
 
 @Service
-@ServerEndpoint("/socket/chatt")
+@ServerEndpoint("/socket/chatt/{ip}")
 public class WebSocketChat {
     private static Set<Session> clients = Collections.synchronizedSet(new HashSet<Session>());
     private static Logger logger = LoggerFactory.getLogger(WebSocketChat.class);
+
+    private static List<String> dataList = new ArrayList<>();
 
     @OnOpen
     public void onOpen(Session session) {
@@ -35,7 +37,8 @@ public class WebSocketChat {
     @OnMessage
     public void onMessage(String message, Session session) throws IOException {
         logger.info("receive message : {}", message);
-
+        dataList.add(message);
+        System.out.println(dataList);
         for (Session s : clients) {
             logger.info("send data : {}", message);
             s.getBasicRemote().sendText(message);
