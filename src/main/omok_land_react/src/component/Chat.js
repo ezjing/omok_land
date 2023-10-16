@@ -1,22 +1,23 @@
 import React, { useCallback, useRef, useState, useEffect } from 'react';
 import {createGlobalStyle} from 'styled-components';
 import reset from 'styled-reset';
+import '../static/css/chat.css';
+import {dividerClasses} from "@mui/material";
 
-
-const Chat = () => {
+function Chat(props) {
     const [msg, setMsg] = useState("");
     const [name, setName] = useState("");
     const [chatt, setChatt] = useState([]);
     const [chkLog, setChkLog] = useState(false);
     const [socketData, setSocketData] = useState();
-    const [ip, setIp] = useState('1234');
+    const [ip, setIp] = useState(props.ip);
 
     const ws = useRef(null);    //webSocket을 담는 변수,
                                 //컴포넌트가 변경될 때 객체가 유지되어야하므로 'ref'로 저장
-
+    
     const msgBox = chatt.map((item, idx) => (
         <div key={idx} className={item.name === name ? 'me' : 'other'} id={'msg-box'}>
-            <span><b>{item.name}</b></span> [ {item.date} ]<br/>
+            <span><b>{item.name}</b></span> [{item.date.substring(14)}]<br/>
             <span>{item.msg}</span>
         </div>
     ));
@@ -57,7 +58,7 @@ const Chat = () => {
     });
 
 
-    const send = useCallback(() => {
+    const nameCheck = useCallback(() => {
         if(!chkLog) {
             if(name === "") {
                 alert("이름을 입력하세요.");
@@ -65,18 +66,21 @@ const Chat = () => {
                 return;
             }
             webSocketLogin();
+            alert('채팅방에 입장하셨습니다.');
             setChkLog(true);
         }
-
+    });
+    
+    const send = useCallback(() => {
         if(msg !== ''){
             const data = {
                 name,
                 msg,
                 date: new Date().toLocaleString(),
             };  //전송 데이터(JSON)
-
+        
             const temp = JSON.stringify(data);
-
+        
             if(ws.current.readyState === 0) {   //readyState는 웹 소켓 연결 상태를 나타냄
                 ws.current.onopen = () => { //webSocket이 맺어지고 난 후, 실행
                     console.log(ws.current.readyState);
@@ -91,7 +95,7 @@ const Chat = () => {
             return;
         }
         setMsg("");
-    });
+    })
     //webSocket
     //webSocket
     //webSocket
@@ -112,16 +116,19 @@ const Chat = () => {
                         <div className='talk-shadow'></div>
                         {msgBox}
                     </div>
-                    <input disabled={chkLog}
-                           placeholder='이름을 입력하세요.'
-                           type='text'
-                           id='name'
-                           value={name}
-                           onChange={(event => setName(event.target.value))} />
+                    <div id={'idZone'}>
+                        <input disabled={chkLog}
+                               placeholder='이름을 입력하세요.'
+                               type='text'
+                               id='name'
+                               value={name}
+                               onChange={(event => setName(event.target.value))} />
+                        <input type={'button'} value={'확인'} id={'btnNameCheck'} onClick={nameCheck}/>
+                    </div>
                     <div id='sendZone'>
                         <textarea id='msg' value={msg} onChange={onText}
                                   onKeyDown={(ev) => {if(ev.keyCode === 13){send();}}}></textarea>
-                        <input type='button' value='전송' id='btnSend' onClick={send} className={'btn'}/>
+                        <input type='button' value='전송' id='btnSend' onClick={send} />
                     </div>
                 </div>
             </div>

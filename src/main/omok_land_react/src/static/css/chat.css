@@ -30,8 +30,8 @@ input[type='number']::-webkit-outer-spin-button {
     margin: 0 auto;
 }
 
-#title{
-    font-size: 30pt;
+#title {
+    font-size: 20pt;
     text-align: center;
     margin-bottom: 20px;
 }
@@ -56,13 +56,14 @@ input[type='number']::-webkit-outer-spin-button {
     width: 60%;
     display: block;
     padding: 10px;
+    margin-top: 10px;
     border-radius:10px;
     box-sizing: border-box;
 }
 
 .me {
     background-color : #ffc;
-    margin : 0px 0px 20px 40%;
+    margin : 0px 0px 0px 40%;
 }
 
 .other {
@@ -71,11 +72,23 @@ input[type='number']::-webkit-outer-spin-button {
 }
 
 #name {
-    display: block;
+    display: inline-block;
     border: 1px solid #dcdcdc;
     background-color: white;
     padding:5px 2px;
     margin-top: 20px;
+}
+
+
+#btnNameCheck {
+    background-color: #324298;
+    color: white;
+    width: 10%;
+    height: 35px;
+    display: inline-block;
+    border: 1px solid #dcdcdc;
+    text-align: center;
+    font-weight: bold;
 }
 
 #sendZone > * {
@@ -84,6 +97,7 @@ input[type='number']::-webkit-outer-spin-button {
     height : 70px;
     display: flex;
 }
+
 #msg{
     width: 90%;
     display: inline-block;
@@ -92,6 +106,7 @@ input[type='number']::-webkit-outer-spin-button {
     background-color: #fff;
     box-sizing: border-box;
 }
+
 #btnSend {
     background-color: #324298;
     color: white;
