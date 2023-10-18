@@ -1,42 +1,33 @@
 import React, {useState} from 'react';
 import {Grid} from "@mui/material";
 import './pan.css';
+import './omok.css';
 
 
 function Pan() {
+
+    const clickHandler = (row, col) => {
+        alert(`클릭 ${row} : ${col}`)
+    }
+
     return (
-        // <div>
-        //     <div>
-        //         <div className={'d-flex align-items-center'}><hr/></div>
-        //         <div className={'box'} style={{display: 'inline'}}>2</div>
-        //         <div className={'box'} style={{display: 'inline'}}>3</div>
-        //     </div>
-        //     <div>
-        //         <div className={'box'} style={{display: 'inline'}}>1</div>
-        //         <div className={'box'} style={{display: 'inline'}}>2</div>
-        //         <div className={'box'} style={{display: 'inline'}}>3</div>
-        //     </div>
-        //     <div>
-        //         <div className={'box'} style={{display: 'inline'}}>1</div>
-        //         <div className={'box'} style={{display: 'inline'}}>2</div>
-        //         <div className={'box'} style={{display: 'inline'}}>3</div>
-        //     </div>
-        // </div>
-
-
-        // <div className={'border border-warning border-2 m-0'} style={{width: '200px', height: '200px'}}>
-        //     <hr className={''}/>
-        //     {/*<hr className={'text-danger border border-3 border-danger'} style={{lineHeight : '100px'}}/>*/}
-        //     {/*<hr className={'text-primary'} style={{transform: 'rotate( 90deg )'}}/>*/}
-        // </div>
-        <div>
-            <div className="cross-container">
-                <hr className="horizontal-line my-0"/>
-                <hr className="vertical-line my-0"/>
+        <div className={'mx-auto my-5'} style={{width : '80%'}}>
+            <div className="omok-board">
+                {/*기본 19칸 15칸으로 변경하면 css도 바꿔줘야함*/}
+                {Array.from({length: 19}, (_, rowIndex) => (
+                    <div key={rowIndex}>
+                        {Array.from({length: 19}, (_, colIndex) => (
+                            <div style={{cursor : 'pointer'}} key={colIndex} onClick={() => {clickHandler(rowIndex, colIndex)}}>
+                                <div className="cross-container">
+                                    <hr className="horizontal-line my-0"/>
+                                    <hr className="vertical-line my-0"/>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                ))}
             </div>
-
         </div>
-
     );
 }
 
