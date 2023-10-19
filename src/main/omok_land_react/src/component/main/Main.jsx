@@ -9,25 +9,26 @@ function Main(props) {
     const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
 // 화면 크기가 변경될 때마다 windowWidth 상태 업데이트
-    useEffect(() => {
-        axios.get(`http://localhost:8080/server/getIp`) // ip 호출 axios
-            .then(res => {
-                console.log(res.data);
-            })
-            .catch(err => {
-                alert(`통신 실패`);
-            });
-
-        const handleResize = () => {
-            setWindowWidth(window.innerWidth);
-        };
-
-        window.addEventListener("resize", handleResize);
-
-        return () => {
-            window.removeEventListener("resize", handleResize);
-        };
-    }, []);
+//     useEffect(() => {
+//         axios.get(`http://localhost:8080/server/getIp`) // ip 호출 axios
+//             .then(res => {
+//                 console.log(res.data);
+//                 setIp(res.data);
+//             })
+//             .catch(err => {
+//                 alert(`통신 실패`);
+//             });
+//
+//         const handleResize = () => {
+//             setWindowWidth(window.innerWidth);
+//         };
+//
+//         window.addEventListener("resize", handleResize);
+//
+//         return () => {
+//             window.removeEventListener("resize", handleResize);
+//         };
+//     }, []);
 
     return (
         <Box sx={{
