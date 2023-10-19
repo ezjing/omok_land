@@ -21,7 +21,7 @@ const Chat = () => {
         </div>
     ));
 
-    useEffect(() => {
+    useEffect(() => {   // 채팅이 계속 이어지도록 하는 이펙트
         if(socketData !== undefined) {
             const tempData = chatt.concat(socketData);
             console.log(tempData);
@@ -48,16 +48,16 @@ const Chat = () => {
 
 
     const webSocketLogin = useCallback(() => {
-        ws.current = new WebSocket("ws://localhost:8080/socket/chatt/" + ip);
+        ws.current = new WebSocket("ws://localhost:8080/socket/chatt/" + ip);   // 웹소켓 주소
 
-        ws.current.onmessage = (message) => {
+        ws.current.onmessage = (message) => {   // 웹소켓 메시지 입력 되는 부분
             const dataSet = JSON.parse(message.data);
             setSocketData(dataSet);
         }
     });
 
 
-    const send = useCallback(() => {
+    const send = useCallback(() => {    // 웹소켓 데이터 입력 되는 부분
         if(!chkLog) {
             if(name === "") {
                 alert("이름을 입력하세요.");
@@ -69,7 +69,7 @@ const Chat = () => {
         }
 
         if(msg !== ''){
-            const data = {
+            const data = {  // 이름, 메시지, 날짜 저장
                 name,
                 msg,
                 date: new Date().toLocaleString(),
