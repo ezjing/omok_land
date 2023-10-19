@@ -1,10 +1,10 @@
 .omok-board {
-    background-color: #8B4513; /* 나무색 */
-    height: 95rem;
+    background-color: #ffe083; /* 나무색 */
+    width: 100%;
     display: grid;
-    grid-template-columns: repeat(19, 1fr);
-    grid-template-rows: repeat(19, 1fr);
-    border: 2px solid #000; /* 검은색 테두리 */
+    grid-template-columns: repeat(15, 1fr);
+    grid-template-rows: repeat(15, 1fr);
+    border: 1px solid #000; /* 검은색 테두리 */
 }
 
 .target:hover {

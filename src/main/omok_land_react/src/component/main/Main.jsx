@@ -9,26 +9,26 @@ function Main(props) {
     const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
 // 화면 크기가 변경될 때마다 windowWidth 상태 업데이트
-//     useEffect(() => {
-//         axios.get(`http://localhost:8080/server/getIp`) // ip 호출 axios
-//             .then(res => {
-//                 console.log(res.data);
-//                 setIp(res.data);
-//             })
-//             .catch(err => {
-//                 alert(`통신 실패`);
-//             });
-//
-//         const handleResize = () => {
-//             setWindowWidth(window.innerWidth);
-//         };
-//
-//         window.addEventListener("resize", handleResize);
-//
-//         return () => {
-//             window.removeEventListener("resize", handleResize);
-//         };
-//     }, []);
+    useEffect(() => {
+        // axios.get(`http://localhost:8080/server/getIp`) // ip 호출 axios
+        //     .then(res => {
+        //         console.log(res.data);
+        //         setIp(res.data);
+        //     })
+        //     .catch(err => {
+        //         alert(`통신 실패`);
+        //     });
+
+        const handleResize = () => {
+            setWindowWidth(window.innerWidth);
+        };
+
+        window.addEventListener("resize", handleResize);
+
+        return () => {
+            window.removeEventListener("resize", handleResize);
+        };
+    }, []);
 
     return (
         <Box sx={{
@@ -50,12 +50,12 @@ function Main(props) {
             <Box display="flex" alignItems="center" justifyContent="center" height={'100%'} marginBorder={'12em'}>  {/* 이렇게 표현해도 되고 sx안에 넣어 정리해도 됨 */}
                 {windowWidth >= 960
                     ?
-                        <Link href={`#`}>
-                            <img src="/img/main/logo.png" alt="" style={{width: '40%', marginBottom: '17em'}}/>
+                        <Link href={`#`} className={'d-flex align-items-center'}>
+                            <img src="/img/main/logo.png" className={'mx-auto'} alt="" style={{width: '40%', marginBottom: '17em'}}/>
                         </Link>
                     :
                         <Link href={`#`}>
-                            <img src="/img/main/logo.png" alt="" style={{width: '80%', marginBottom: '25em'}}/>
+                            <img src="/img/main/logo.png" className={'mx-auto'}  alt="" style={{width: '80%', marginBottom: '25em'}}/>
                         </Link>
                 }
             </Box>

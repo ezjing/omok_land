@@ -1,7 +1,7 @@
 import React, { useCallback, useRef, useState, useEffect } from 'react';
 import {createGlobalStyle} from 'styled-components';
 import reset from 'styled-reset';
-import '../static/css/chat.css';
+import '../../static/css/chat.css';
 import {dividerClasses} from "@mui/material";
 
 function Chat(props) {
@@ -22,7 +22,7 @@ function Chat(props) {
     </div>
   ));
 
-  const msgBox2 = chatt.map((item, index) => (
+  const msgBox2 = chatt.filter(item1 => item1.topic === 'chat').map((item, index) => (
     <div key={index} className={item.name === name ? 'me' : 'other'} id={'msg-box'}>
       <span><b>{item.name}</b></span> [{item.date.substring(14)}]<br/>
       <span>{item.msg}</span>
@@ -111,6 +111,7 @@ function Chat(props) {
     if(msg !== ''){
       const data = {
         name,
+        topic : 'chat',
         msg,
         date: new Date().toLocaleString(),
       };  //전송 데이터(JSON)

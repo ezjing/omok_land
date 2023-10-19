@@ -1,6 +1,6 @@
 .cross-container {
-    width: 5rem;
-    height: 5rem;
+    width: 100%;
+    height: 100%;
     position: relative;
 }
 
@@ -13,13 +13,13 @@
 
 .horizontal-line {
     width: 100%;
-    height: 4px; /* 가로선 두께 조절 */
+    height: 2px; /* 가로선 두께 조절 */
     top: 50%;
     /*transform: translateY(-50%);*/
 }
 
 .vertical-line {
-    width: 4px; /* 세로선 두께 조절 */
+    width: 2px; /* 세로선 두께 조절 */
     height: 100%;
     left: 50%;
     /*transform: translateX(-50%);*/
