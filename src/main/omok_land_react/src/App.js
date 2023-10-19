@@ -6,6 +6,7 @@ import Pan from "./component/Pan";
 import {BrowserRouter, Route, Routes} from "react-router-dom";
 import Timer from "./component/main/Timer";
 import Game from "./component/game/Game";
+import PlayGround from "./component/playground/PlayGround";
 
 function App() {
     return (
@@ -13,7 +14,7 @@ function App() {
             <BrowserRouter>
                 <Routes>
                     <Route path={'/main'} element={<Main/>}/>
-                    {/*<Route path={'/playground'} element={<Playground/>}/>*/}
+                    <Route path={'/playground/:ip'} element={<PlayGround/>}/>
                     <Route path={'/timer'} element={<Timer/>}/>
                     <Route path={'/game'} element={<Game/>}/>
                 </Routes>

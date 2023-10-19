@@ -7,6 +7,7 @@ import {dividerClasses} from "@mui/material";
 function Chat(props) {
   const [msg, setMsg] = useState("");
   const [name, setName] = useState("");
+  const [join, setJoin] = useState([]);
   const [chatt, setChatt] = useState([]);
   const [chkLog, setChkLog] = useState(false);
   const [socketData, setSocketData] = useState();
@@ -15,18 +16,37 @@ function Chat(props) {
   const ws = useRef(null);    //webSocket을 담는 변수,
                               //컴포넌트가 변경될 때 객체가 유지되어야하므로 'ref'로 저장
   
-  const msgBox = chatt.map((item, idx) => (
-    <div key={idx} className={item.name === name ? 'me' : 'other'} id={'msg-box'}>
+  const msgBox1 = join.map((item, idx) => (
+      <div key={idx} >
+      <span><span className={'fw-bold'}>{item.name}</span>님이 입장하셨습니다.</span>
+    </div>
+  ));
+
+  const msgBox2 = chatt.map((item, index) => (
+    <div key={index} className={item.name === name ? 'me' : 'other'} id={'msg-box'}>
       <span><b>{item.name}</b></span> [{item.date.substring(14)}]<br/>
       <span>{item.msg}</span>
+    </div>
+  ))
+
+  const msgBox3 = join.map((item, idx) => (
+    <div key={idx} >
+      <span><span className={'fw-bold'}>{item.name}</span>님이 퇴장하셨습니다.</span>
     </div>
   ));
   
   useEffect(() => {
     if(socketData !== undefined) {
-      const tempData = chatt.concat(socketData);
-      console.log(tempData);
-      setChatt(tempData);
+      console.log(socketData);
+      if (socketData.msg == '') {
+        const tempData = join.concat(socketData);
+        setJoin(tempData);
+      }
+      else {
+        const tempData = chatt.concat(socketData);
+        console.log(tempData);
+        setChatt(tempData);
+      }
     }
   }, [socketData]);
   
@@ -66,8 +86,24 @@ function Chat(props) {
         return;
       }
       webSocketLogin();
-      alert('채팅방에 입장하셨습니다.');
       setChkLog(true);
+
+      const data = {
+        name,
+        msg,
+        date: new Date().toLocaleString(),
+      };  //전송 데이터(JSON)
+
+      const temp = JSON.stringify(data);
+
+      if(ws.current.readyState === 0) {   //readyState는 웹 소켓 연결 상태를 나타냄
+        ws.current.onopen = () => { //webSocket이 맺어지고 난 후, 실행
+          console.log(ws.current.readyState);
+          ws.current.send(temp);
+        }
+      }else {
+        ws.current.send(temp);
+      }
     }
   });
   
@@ -88,6 +124,7 @@ function Chat(props) {
         }
       }else {
         ws.current.send(temp);
+
       }
     }else {
       alert("메세지를 입력하세요.");
@@ -112,9 +149,18 @@ function Chat(props) {
         <div id='chatt'>
           <h1 id="title">오목랜드 채팅방</h1>
           <br/>
+          {/* 입장 메시지*/}
+          <div className={'text-center mb-2'}>
+            {msgBox1}
+          </div>
+          {/* 채팅 메시지*/}
           <div id='talk'>
             <div className='talk-shadow'></div>
-            {msgBox}
+            {msgBox2}
+          </div>
+          {/* 퇴장 메시지*/}
+          <div className={'text-center mb-2'}>
+            {msgBox3}
           </div>
           <div id={'idZone'}>
             <input disabled={chkLog}
