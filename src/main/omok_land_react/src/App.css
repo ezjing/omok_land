@@ -1,4 +1,10 @@
-
+body {
+  background-image: url(../public/img/main/omok.jpg);
+  background-repeat: no-repeat;
+  background-position: top center;
+  background-size: cover;
+  background-attachment: fixed;
+}
 .App-logo {
   height: 40vmin;
   pointer-events: none;

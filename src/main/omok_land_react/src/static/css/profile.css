@@ -1,0 +1,34 @@
+#profile {
+    display: flex;
+    flex-direction: column;
+}
+.pro-me {
+    width: 80%;
+    margin-top: 50%;
+    margin-bottom: 10%;
+}
+.versus {
+    width: 80%;
+    margin-bottom: 10%;
+}
+.pro-you {
+    width: 80%;
+}
+
+@media screen and (max-width: 575px) {
+    #profile {
+        display: flex;
+        flex-direction: row;
+    }
+    .pro-me {
+        width: 0;
+        margin-top: 0;
+        margin-bottom: 0;
+    }
+    .pro-me, .pro-you {
+        width: 50%;
+    }
+    .versus {
+        display: none;
+    }
+}

@@ -53,7 +53,7 @@ public class WebSocketChat {
     }
 
     @OnClose
-    public void onClose(Session session) {
+    public void onClose(Session session) throws IOException {
         logger.info("session close : {}", session);
         clients.remove(session);
     }
