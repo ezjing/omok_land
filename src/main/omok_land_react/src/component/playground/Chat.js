@@ -2,6 +2,7 @@ import React, {useCallback, useRef, useState, useEffect} from 'react';
 import {createGlobalStyle} from 'styled-components';
 import reset from 'styled-reset';
 import '../../static/css/chat.css';
+import ReQuit from "./ReQuit";
 
 function Chat(props) {
   const [msg, setMsg] = useState("");
@@ -17,8 +18,8 @@ function Chat(props) {
   
   const scrollRef = useRef();
   
-  
   const msgBox = chatt.filter(item1 => item1.topic === 'chat').map((item, idx) => {
+    
     if (item.msg == 'join') {
       return (
         <div key={idx} className={'text-center my-2'} >
@@ -29,7 +30,7 @@ function Chat(props) {
     else if (item.msg == 'exit') {
       return (
         <div key={idx} className={'text-center my-2'}>
-          <span><span className={'fw-bold'}>{item.name}</span>님이 퇴장하셨습니다.</span>
+          <span><span className={'fw-bold'}>{item.name}</span>님이 채팅방을 퇴장하셨습니다.</span>
         </div>
       )
     }
@@ -85,8 +86,8 @@ function Chat(props) {
   
   useEffect(() => {
     if(socketData !== undefined) {
-      console.log(socketData);
       const tempData = chatt.concat(socketData);
+      // console.log(tempData);
       setChatt(tempData);
     }
   }, [socketData]);
@@ -247,20 +248,27 @@ function Chat(props) {
           </div>
 
           
-          {/*닉네임 설정*/}
-          <div id={'idZone'}>
-            <input disabled={chkLog}
-              placeholder='이름을 입력하세요.'
-              type='text'
-              id='name'
-              value={name}
-              onChange={(event => setName(event.target.value))} />
-            <input type={'button'} value={'채팅방 입장'} id={'btnNameCheck'} onClick={nameCheck}/>
-          </div>
-          
-          {/*감정표현*/}
-          
           <div className={'mt-2'}>
+            {/*닉네임 설정*/}
+            <div id={'idZone'} className={'d-flex align-items-center'}>
+              <input
+                disabled={chkLog}
+                placeholder='이름을 입력하세요.'
+                type='text'
+                id='name'
+                value={name}
+                onChange={(event => setName(event.target.value))}/>
+              
+              <input type={'button'} className={'btn btn-primary ms-auto'} value={'채팅방 입장'} onClick={nameCheck} />
+              <input type={'button'} className={'btn btn-dark ms-auto'} value={'채팅방 나가기'} onClick={chatExit} />
+              
+            </div>
+
+          </div>
+
+          
+          {/*감정표현 선택*/}
+          <div className={'mt-1'}>
             <i className="bi bi-outlet" style={{fontSize : '30px'}}></i>
             <div className={'bg-white p-2'} id={'emotion'}>
               <ul className={'d-flex justify-content-between'}>
@@ -284,11 +292,9 @@ function Chat(props) {
             <input disabled={chatQuit} type='button' value='전송' id='btnSend' onClick={send} />
           </div>
         </div>
-        <div className={'d-flex justify-content-end'}>
-          <input type={'button'} id={'btnExit'} onClick={chatExit} value={'채팅방 나가기'} />
-        </div>
       </div>
-
+      <ReQuit ip={ip} name={name} ws={ws} chatt={chatt} socketData={socketData}/>
+      
     </>
   );
 };

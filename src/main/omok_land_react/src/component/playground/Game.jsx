@@ -10,7 +10,7 @@ function Game(props) {
     const [chatt, setChatt] = useState([]);
     const [chkLog, setChkLog] = useState(false);
     const [socketData, setSocketData] = useState();
-    const [ip, setIp] = useState('1234');
+    const [ip, setIp] = useState(props.ip);
 
     const ws = useRef(null);    //webSocket을 담는 변수,
                                 //컴포넌트가 변경될 때 객체가 유지되어야하므로 'ref'로 저장
@@ -60,7 +60,6 @@ function Game(props) {
     useEffect(() => {   // 채팅이 계속 이어지도록 하는 이펙트
         if(socketData !== undefined) {
             const tempData = chatt.concat(socketData);
-            console.log(tempData);
             setChatt(tempData);
         }
     }, [socketData]);
