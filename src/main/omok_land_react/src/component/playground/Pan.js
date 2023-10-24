@@ -20,39 +20,56 @@ function Pan(props) {
                             <div style={{cursor: 'pointer', height: '100%'}} key={colIndex} onClick={() => {
                                 clickHandler(rowIndex, colIndex)
                             }}>
+                                {/* 선 삐져나오는건 width, height % 조정 */}
                                 {/* 위쪽 */}
                                 {colIndex === 0 ?
                                     <div className="cross-container">
-                                        <hr className="horizontal-line my-0" style={ rowIndex === 0 ?{width:'50%',left:'50%'}: rowIndex === 14?{width: '50%'}:{}}/>
-                                        <hr className="vertical-line my-0" style={{height: '50%', top: '50%'}}/>
+                                        <div className="hover"></div>
+                                            <hr className="horizontal-line my-0" style={rowIndex === 0 ? {
+                                                width: '50%',
+                                                left: '50%'
+                                            } : rowIndex === 14 ? {width: '50%'} : {}}/>
+                                            <hr className="vertical-line my-0" style={{height: '50%', top: '50%'}}/>
+
                                     </div>
                                     :
                                     // 아래쪽
                                     colIndex === 14 ?
                                         <div className="cross-container">
-                                            <hr className="horizontal-line my-0" style={rowIndex === 0 ?{width:'50%',left:'50%'}: rowIndex === 14?{width: '50%'}:{}}/>
-                                            <hr className="vertical-line my-0" style={{height: '50%'}}/>
+                                            <div className="hover"></div>
+                                                <hr className="horizontal-line my-0" style={rowIndex === 0 ? {
+                                                    width: '50%',
+                                                    left: '50%'
+                                                } : rowIndex === 14 ? {width: '55%'} : {}}/>
+                                                <hr className="vertical-line my-0" style={{height: '50%'}}/>
+
                                         </div>
                                         :
                                         // 왼쪽
                                         rowIndex === 0 ?
                                             <div className="cross-container">
-                                                <hr className="horizontal-line my-0"
-                                                    style={{width: '50%', left: '50%'}}/>
-                                                <hr className="vertical-line my-0"/>
+                                                <div className="hover"></div>
+                                                    <hr className="horizontal-line my-0"
+                                                        style={{width: '50%', left: '50%'}}/>
+                                                    <hr className="vertical-line my-0"/>
+
                                             </div>
                                             :
                                             // 오른쪽
                                             rowIndex === 14 ?
                                                 <div className="cross-container">
-                                                    <hr className="horizontal-line my-0" style={{width: '50%'}}/>
-                                                    <hr className="vertical-line my-0"/>
+                                                    <div className="hover"></div>
+                                                        <hr className="horizontal-line my-0" style={{width: '50%'}}/>
+                                                        <hr className="vertical-line my-0"/>
+
                                                 </div>
                                                 // 나머지
                                                 :
                                                 <div className="cross-container">
-                                                    <hr className="horizontal-line my-0"/>
-                                                    <hr className="vertical-line my-0"/>
+                                                    <div className="hover"></div>
+                                                        <hr className="horizontal-line my-0"/>
+                                                        <hr className="vertical-line my-0"/>
+
                                                 </div>
                                 }
                             </div>
