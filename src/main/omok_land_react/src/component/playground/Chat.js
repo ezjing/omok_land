@@ -3,6 +3,10 @@ import {createGlobalStyle} from 'styled-components';
 import reset from 'styled-reset';
 import '../../static/css/chat.css';
 import ReQuit from "./ReQuit";
+import Accordion from '@mui/material/Accordion';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import {Button} from "@mui/material";
 
 function Chat(props) {
   const [msg, setMsg] = useState("");
@@ -18,12 +22,12 @@ function Chat(props) {
   
   const scrollRef = useRef();
   
-  const msgBox = chatt.filter(item1 => item1.topic === 'chat').map((item, idx) => {
+  let msgBox = chatt.filter(item1 => item1.topic === 'chat').map((item, idx) => {
     
     if (item.msg == 'join') {
       return (
         <div key={idx} className={'text-center my-2'} >
-          <span><span className={'fw-bold'}>{item.name}</span>님이 입장하셨습니다.</span>
+          <span><span className={'fw-bold'}>{item.name}</span>님이 채팅방에 입장하셨습니다.</span>
         </div>
       )
     }
@@ -36,7 +40,7 @@ function Chat(props) {
     }
     else if (item.msg === 'emo1') {
       return (
-        <div key={idx} className={item.name === name ? 'me' : 'other'} id={'msg-box'}>
+        <div hidden={chatQuit} key={idx} className={item.name === name ? 'me' : 'other'} id={'msg-box'}>
           <span><b>{item.name}</b></span> [{item.date.substring(14)}]<br/>
           <img src={process.env.PUBLIC_URL + '/img/main/star.png'} style={{width: '50%'}} />
         </div>
@@ -44,7 +48,7 @@ function Chat(props) {
     }
     else if (item.msg === 'emo2') {
       return (
-        <div key={idx} className={item.name === name ? 'me' : 'other'} id={'msg-box'}>
+        <div hidden={chatQuit} key={idx} className={item.name === name ? 'me' : 'other'} id={'msg-box'}>
           <span><b>{item.name}</b></span> [{item.date.substring(14)}]<br/>
           <img src={process.env.PUBLIC_URL + '/img/main/nerd.png'} style={{width: '50%'}} />
         </div>
@@ -52,7 +56,7 @@ function Chat(props) {
     }
     else if (item.msg === 'emo3') {
       return (
-        <div key={idx} className={item.name === name ? 'me' : 'other'} id={'msg-box'}>
+        <div hidden={chatQuit} key={idx} className={item.name === name ? 'me' : 'other'} id={'msg-box'}>
           <span><b>{item.name}</b></span> [{item.date.substring(14)}]<br/>
           <img src={process.env.PUBLIC_URL + '/img/main/serious.png'} style={{width: '50%'}} />
         </div>
@@ -60,7 +64,7 @@ function Chat(props) {
     }
     else if (item.msg === 'emo4') {
       return (
-        <div key={idx} className={item.name === name ? 'me' : 'other'} id={'msg-box'}>
+        <div hidden={chatQuit} key={idx} className={item.name === name ? 'me' : 'other'} id={'msg-box'}>
           <span><b>{item.name}</b></span> [{item.date.substring(14)}]<br/>
           <img src={process.env.PUBLIC_URL + '/img/main/awkward.png'} style={{width: '50%'}} />
         </div>
@@ -68,7 +72,7 @@ function Chat(props) {
     }
     else if (item.msg === 'emo5') {
       return (
-        <div key={idx} className={item.name === name ? 'me' : 'other'} id={'msg-box'}>
+        <div hidden={chatQuit} key={idx} className={item.name === name ? 'me' : 'other'} id={'msg-box'}>
           <span><b>{item.name}</b></span> [{item.date.substring(14)}]<br/>
           <img src={process.env.PUBLIC_URL + '/img/main/shouting.png'} style={{width: '50%'}} />
         </div>
@@ -76,7 +80,7 @@ function Chat(props) {
     }
     else {
       return (
-        <div key={idx} className={item.name === name ? 'me' : 'other'} id={'msg-box'}>
+        <div hidden={chatQuit} key={idx} className={item.name === name ? 'me' : 'other'} id={'msg-box'}>
           <span><b>{item.name}</b></span> [{item.date.substring(14)}]<br/>
           <span>{item.msg}</span>
         </div>
@@ -118,7 +122,8 @@ function Chat(props) {
   
   // 채팅 입장
   const nameCheck = useCallback(() => {
-    if(!chkLog) {
+    // 채팅방 처음 입장할 경우
+    if(!chkLog && !chatQuit) {
       if(name === "") {
         alert("이름을 입력하세요.");
         document.getElementById("name").focus();
@@ -135,7 +140,6 @@ function Chat(props) {
       };  //전송 데이터(JSON)
 
       const temp = JSON.stringify(data);
-
       if(ws.current.readyState === 0) {   //readyState는 웹 소켓 연결 상태를 나타냄
         ws.current.onopen = () => { //webSocket이 맺어지고 난 후, 실행
           console.log(ws.current.readyState);
@@ -144,6 +148,23 @@ function Chat(props) {
       } else {
         ws.current.send(temp);
       }
+    }
+    // 채팅방 나갔다가 재입장할 경우
+    else if (!chkLog && chatQuit) {
+      setChkLog(true);
+
+      const data = {
+        name,
+        topic : 'chat',
+        msg : 'join',
+        date: new Date().toLocaleString(),
+      };  //전송 데이터(JSON)
+      const temp = JSON.stringify(data);
+
+      ws.current.send(temp);
+
+      setChatQuit(false);
+      setMsg("");
     }
   });
   
@@ -170,7 +191,7 @@ function Chat(props) {
       }
     }
     else {
-      alert("닉네임 설정 후, 채팅방 입장을 클릭해주세요");
+      alert("채팅방 입장 시 가능합니다.");
     }
   }
   
@@ -230,8 +251,7 @@ function Chat(props) {
     }
     setMsg('채팅방을 나가셨습니다.');
     setChatQuit(true);
-    ws.current.close();
-
+    setChkLog(false);
   });
   
   
@@ -250,46 +270,58 @@ function Chat(props) {
           
           <div className={'mt-2'}>
             {/*닉네임 설정*/}
-            <div id={'idZone'} className={'d-flex align-items-center'}>
+            <div id={'idZone'} className={'input-group'}>
               <input
+                className={'form-control'}
                 disabled={chkLog}
                 placeholder='이름을 입력하세요.'
                 type='text'
                 id='name'
                 value={name}
                 onChange={(event => setName(event.target.value))}/>
-              
-              <input type={'button'} className={'btn btn-primary ms-auto'} value={'채팅방 입장'} onClick={nameCheck} />
-              <input type={'button'} className={'btn btn-dark ms-auto'} value={'채팅방 나가기'} onClick={chatExit} />
-              
+              <input disabled={chkLog} type={'button'} className={'btn btn-primary ms-1 me-1'} value={'채팅방 입장'} onClick={nameCheck} />
+              <input disabled={!chkLog} type={'button'} className={'btn btn-dark'} value={'채팅방 나가기'} onClick={chatExit} />
             </div>
-
           </div>
 
           
           {/*감정표현 선택*/}
-          <div className={'mt-1'}>
-            <i className="bi bi-outlet" style={{fontSize : '30px'}}></i>
-            <div className={'bg-white p-2'} id={'emotion'}>
-              <ul className={'d-flex justify-content-between'}>
-                <li><button type={'button'} value={'1'} onClick={emoSend}>개꿀띠</button></li>
-                <li><button type={'button'} value={'2'} onClick={emoSend}>포커페이스</button></li>
-                <li><button type={'button'} value={'3'} onClick={emoSend}>고민중</button></li>
-                <li><button type={'button'} value={'4'} onClick={emoSend}>당황</button></li>
-                <li><button type={'button'} value={'5'} onClick={emoSend}>빨리빨리</button></li>
-              </ul>
-            </div>
+          <div className={'mt-2'}>
+            <Accordion>
+              <AccordionSummary
+                aria-controls="panel1a-content"
+                id="panel1a-header"
+              style={{padding: '0px'}}>
+                <div className={'d-flex align-items-center ms-3'}>
+                  <i className="bi bi-outlet" style={{fontSize : '30px', color: 'royalblue'}}></i>
+                  <p className={'ms-2 fw-bold fs-6'} style={{color: 'royalblue'}}>감정표현</p>
+                </div>
+
+              </AccordionSummary>
+              <AccordionDetails>
+                  <div id={'emotion'}>
+                    <Button value={'1'} onClick={emoSend} variant="outlined">개꿀띠</Button>
+                    <Button value={'2'} onClick={emoSend} variant="outlined">포커페이스</Button>
+                    <Button value={'3'} onClick={emoSend} variant="outlined">고민중</Button>
+                    <Button value={'4'} onClick={emoSend} variant="outlined">당황</Button>
+                    <Button value={'5'} onClick={emoSend} variant="outlined">빨리빨리</Button>
+                  </div>
+              </AccordionDetails>
+            </Accordion>
+
           </div>
           
           {/*채팅메시지*/}
-          <div id='sendZone'>
+          <div id='sendZone' className={'input-group mt-2'}>
             <textarea
+              placeholder={'메시지를 입력하세요'}
+              className={'form-control'}
               disabled={chatQuit}
               id='msg'
               value={msg}
               onChange={onText}
               onKeyDown={(ev) => {if(ev.keyCode === 13){send();}}}></textarea>
-            <input disabled={chatQuit} type='button' value='전송' id='btnSend' onClick={send} />
+            <input disabled={chatQuit} type='button' value='전송' id='btnSend' className={'btn btn-warning fw-bold'} onClick={send} />
           </div>
         </div>
       </div>

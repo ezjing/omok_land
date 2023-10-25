@@ -10,7 +10,7 @@ function PlayGround(props) {
   console.log(param.ip);
   
   return (
-    <div className={'container-fluid'} style={{backgroundImage: './omok.jpg'}}>
+    <div className={'container-fluid'}>
       <div className={'row'}>
         <div className={'col-sm-1'}></div>
         <div className={'col-sm-6'}>

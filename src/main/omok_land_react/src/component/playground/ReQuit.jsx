@@ -22,7 +22,7 @@ function ReQuit(props) {
   
   useEffect(() => {
     if(socketData !== undefined) {
-      // console.log(socketData);
+
       const tempData = chatt.concat(socketData);
       console.log(tempData);
       setChatt(tempData);
