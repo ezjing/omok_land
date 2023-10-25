@@ -16,7 +16,7 @@ function Chat(props) {
   const [chatQuit, setChatQuit] = useState(false);
   const [socketData, setSocketData] = useState();
   const [ip, setIp] = useState(props.ip);
-  
+
   const ws = useRef(null);    //webSocket을 담는 변수,
   //컴포넌트가 변경될 때 객체가 유지되어야하므로 'ref'로 저장
   
@@ -92,7 +92,10 @@ function Chat(props) {
     if(socketData !== undefined) {
       const tempData = chatt.concat(socketData);
       // console.log(tempData);
+      tempData.filter(item => item.msg === "join" || item.topic === "game").length > 1 ? props.gaming(true) : props.gaming(false)
+
       setChatt(tempData);
+
     }
   }, [socketData]);
   

@@ -24,7 +24,7 @@ function ReQuit(props) {
     if(socketData !== undefined) {
 
       const tempData = chatt.concat(socketData);
-      console.log(tempData);
+      // console.log(tempData);
       setChatt(tempData);
     }
   }, [socketData]);
