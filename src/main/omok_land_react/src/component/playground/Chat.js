@@ -11,18 +11,17 @@ import {Button} from "@mui/material";
 function Chat(props) {
   const [msg, setMsg] = useState("");
   const [name, setName] = useState("");
-  const [chatt, setChatt] = useState([]);
+  // const [ws, setWs] = useState(props.ws);
+  // const [chatt, setChatt] = useState([]);
   const [chkLog, setChkLog] = useState(false);
   const [chatQuit, setChatQuit] = useState(false);
-  const [socketData, setSocketData] = useState();
+  // const [socketData, setSocketData] = useState();
   const [ip, setIp] = useState(props.ip);
 
-  const ws = useRef(null);    //webSocket을 담는 변수,
-  //컴포넌트가 변경될 때 객체가 유지되어야하므로 'ref'로 저장
   
   const scrollRef = useRef();
   
-  let msgBox = chatt.filter(item1 => item1.topic === 'chat').map((item, idx) => {
+  let msgBox = props.chatt.filter(item1 => item1.topic === 'chat').map((item, idx) => {
     
     if (item.msg == 'join') {
       return (
@@ -87,17 +86,12 @@ function Chat(props) {
       )
     }
   })
-  
-  useEffect(() => {
-    if(socketData !== undefined) {
-      const tempData = chatt.concat(socketData);
-      // console.log(tempData);
-      tempData.filter(item => item.msg === "join" || item.topic === "game").length > 1 ? props.gaming(true) : props.gaming(false)
 
-      setChatt(tempData);
+  // useEffect(() => {
+  //   setChatt(props.chatt);
+  //   setSocketData(props.socketData);
+  // }, [props.socketData]);
 
-    }
-  }, [socketData]);
   
   const GlobalStyle = createGlobalStyle`  //css 초기화가 된 component
   ${reset}
@@ -107,21 +101,14 @@ function Chat(props) {
   useEffect(() => {
     scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
 
-  }, [chatt]);
+  }, [props.chatt]);
   
   
   const onText = event => {
     console.log(event.target.value);
     setMsg(event.target.value);
   }
-  
-  const webSocketLogin = useCallback(() => {
-    ws.current = new WebSocket("ws://localhost:8080/socket/chatt/" + ip);
-    ws.current.onmessage = (message) => {
-      const dataSet = JSON.parse(message.data);
-      setSocketData(dataSet);
-    }
-  });
+
   
   // 채팅 입장
   const nameCheck = useCallback(() => {
@@ -132,7 +119,6 @@ function Chat(props) {
         document.getElementById("name").focus();
         return;
       }
-      webSocketLogin();
       setChkLog(true);
 
       const data = {
@@ -143,14 +129,9 @@ function Chat(props) {
       };  //전송 데이터(JSON)
 
       const temp = JSON.stringify(data);
-      if(ws.current.readyState === 0) {   //readyState는 웹 소켓 연결 상태를 나타냄
-        ws.current.onopen = () => { //webSocket이 맺어지고 난 후, 실행
-          console.log(ws.current.readyState);
-          ws.current.send(temp);
-        }
-      } else {
-        ws.current.send(temp);
-      }
+
+      props.ws.current.send(temp);
+
     }
     // 채팅방 나갔다가 재입장할 경우
     else if (!chkLog && chatQuit) {
@@ -164,7 +145,7 @@ function Chat(props) {
       };  //전송 데이터(JSON)
       const temp = JSON.stringify(data);
 
-      ws.current.send(temp);
+      props.ws.current.send(temp);
 
       setChatQuit(false);
       setMsg("");
@@ -183,15 +164,8 @@ function Chat(props) {
       };
   
       const temp = JSON.stringify(data);
-  
-      if(ws.current.readyState === 0) {   //readyState는 웹 소켓 연결 상태를 나타냄
-        ws.current.onopen = () => { //webSocket이 맺어지고 난 후, 실행
-          console.log(ws.current.readyState);
-          ws.current.send(temp);
-        }
-      } else {
-        ws.current.send(temp);
-      }
+
+      props.ws.current.send(temp);
     }
     else {
       alert("채팅방 입장 시 가능합니다.");
@@ -210,16 +184,8 @@ function Chat(props) {
         };  //전송 데이터(JSON)
     
         const temp = JSON.stringify(data);
-    
-        if(ws.current.readyState === 0) {   //readyState는 웹 소켓 연결 상태를 나타냄
-          ws.current.onopen = () => { //webSocket이 맺어지고 난 후, 실행
-            console.log(ws.current.readyState);
-            ws.current.send(temp);
-          }
-        }else {
-          ws.current.send(temp);
-      
-        }
+
+        props.ws.current.send(temp);
       }
       else {
         alert("메세지를 입력하세요.");
@@ -243,15 +209,9 @@ function Chat(props) {
     };  //전송 데이터(JSON)
   
     const temp = JSON.stringify(data);
-  
-    if(ws.current.readyState === 0) {   //readyState는 웹 소켓 연결 상태를 나타냄
-      ws.current.onopen = () => { //webSocket이 맺어지고 난 후, 실행
-        console.log(ws.current.readyState);
-        ws.current.send(temp);
-      }
-    }else {
-      ws.current.send(temp);
-    }
+
+    props.ws.current.send(temp);
+
     setMsg('채팅방을 나가셨습니다.');
     setChatQuit(true);
     setChkLog(false);
@@ -328,7 +288,7 @@ function Chat(props) {
           </div>
         </div>
       </div>
-      <ReQuit ip={ip} name={name} ws={ws} chatt={chatt} socketData={socketData}/>
+      <ReQuit ip={ip} name={name} ws={props.ws} chatt={props.chatt} socketData={props.socketData}/>
       
     </>
   );

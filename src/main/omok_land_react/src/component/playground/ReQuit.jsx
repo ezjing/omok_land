@@ -6,49 +6,44 @@ import {useNavigate} from "react-router-dom";
 
 function ReQuit(props) {
   const [msg, setMsg] = useState("");
-  const [chatt, setChatt] = useState([]);
-  const [socketData, setSocketData] = useState();
-  const [ip, setIp] = useState(props.ip);
+  // const [chatt, setChatt] = useState([]);
+  // const [socketData, setSocketData] = useState();
+  const [ip, setIp] = useState();
   const [ws, setWs] = useState(props.ws);
   const [visible, setVisible] = useState(true);
   
   const navi = useNavigate();
   
-  useEffect(() => {
-    setChatt(props.chatt);
-    setSocketData(props.socketData);
-    
-  }, [props.socketData]);
-  
-  useEffect(() => {
-    if(socketData !== undefined) {
+  // useEffect(() => {
+  //   setChatt(props.chatt);
+  //   setSocketData(props.socketData);
+  //
+  // }, [props.socketData]);
 
-      const tempData = chatt.concat(socketData);
-      // console.log(tempData);
-      setChatt(tempData);
-    }
-  }, [socketData]);
   
   // 재경기 요청
   const reGame = () => {
-    
-    const data = {
-      name : props.name,
-      topic : 'apply',
-      msg : 'regame',
-      date: new Date().toLocaleString(),
-    };  //전송 데이터(JSON)
-  
-    const temp = JSON.stringify(data);
-  
-    if(ws.current.readyState === 0) { //readyState는 웹 소켓 연결 상태를 나타냄
-      ws.current.onopen = () => { //webSocket이 맺어지고 난 후, 실행
-        console.log(ws.current.readyState);
-        ws.current.send(temp);
-      }
-    } else {
-      ws.current.send(temp);
-    }
+    axios.get(`http://localhost:8080/server/getIp`) // ip 호출 axios
+    .then(res => {
+      console.log(res.data);
+      const data = {
+        name : props.name,
+        topic : 'apply',
+        msg : 'regame',
+        ip : res.data,
+        date: new Date().toLocaleString(),
+      };  //전송 데이터(JSON)
+
+      const temp = JSON.stringify(data);
+      console.log(temp);
+
+      props.ws.current.send(temp);
+    })
+    .catch(err => {
+      alert(`통신 실패`);
+    });
+
+
   }
   
   // 재경기 수락
@@ -129,8 +124,8 @@ function ReQuit(props) {
   }
   
   // 재경기 요청 창(상대에게)
-  const regameModal = chatt.filter(item1 => item1.topic === 'apply').map((item, idx) => {
-    if (item.msg === 'regame' && item.name !== props.name && idx === 0) {
+  const regameModal = props.chatt.filter(item1 => item1.topic === 'apply').map((item, idx) => {
+    if (item.msg === 'regame' && item.name !== props.name) {
       return (
         <div className="card border-5 border-black" style={{width: '100%'}}>
           <div className="card-body">
@@ -147,7 +142,7 @@ function ReQuit(props) {
   })
   
   // 재경기 요청 결과 창
-  const regameResult = chatt.filter(item1 => item1.topic === 'answer').map((item, idx) => {
+  const regameResult = props.chatt.filter(item1 => item1.topic === 'answer').map((item, idx) => {
     if (item.msg === 'reject' && item.name !== props.name && visible === true) {
       return (
         <div className="card border-5 border-black" style={{width: '100%'}}>
@@ -182,7 +177,7 @@ function ReQuit(props) {
   })
   
   // 대국방 퇴장 알림 창
-  const gameInOut = chatt.filter(item1 => item1.topic === 'game').map((item, idx) => {
+  const gameInOut = props.chatt.filter(item1 => item1.topic === 'game').map((item, idx) => {
     if (item.msg === 'exit' && item.name !== props.name && visible === true) {
       return (
         <div className="card border-5 border-black" style={{width: '100%'}}>
