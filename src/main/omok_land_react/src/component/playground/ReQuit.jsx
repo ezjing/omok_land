@@ -127,7 +127,7 @@ function ReQuit(props) {
   const regameModal = props.chatt.filter(item1 => item1.topic === 'apply').map((item, idx) => {
     if (item.msg === 'regame' && item.name !== props.name) {
       return (
-        <div className="card border-5 border-black" style={{width: '100%'}}>
+        <div className="card border-5 border-black" style={{width: '100%', zIndex : 9999}}>
           <div className="card-body">
             <h5 className="card-title fs-5 fw-bold">재경기 요청</h5>
             <span><b className={'fw-bold'}>{item.name}</b>님이 재경기를 신청하였습니다.<br/>수락하시겠습니까?</span>

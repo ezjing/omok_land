@@ -9,9 +9,13 @@ function PlayGround(props) {
   const [gaming, setGaming] = useState(false)
   const [socketData, setSocketData] = useState();
   const [chatt, setChatt] = useState([]);
+  const [color, setColor] = useState('black');
+
+  // 선공후공 결정 (테스트용)
+  const [turn, setTurn] = useState()
 
   const param = useParams();
-  console.log(param.ip);
+  // console.log(param.ip);
 
   const ws = useRef();
 
@@ -27,8 +31,12 @@ function PlayGround(props) {
     if(socketData !== undefined) {
 
       const tempData = chatt.concat(socketData);
-      // console.log(tempData);
+      console.log(tempData);
       setChatt(tempData);
+      if(!gaming && tempData.filter(item => item.msg === 'join' ? item : "").length === 2){
+        setGaming(true)
+      }
+      console.log(tempData.filter(item => item.topic === 'game'))
     }
   }, [socketData]);
 
@@ -36,11 +44,11 @@ function PlayGround(props) {
     <div className={'container-fluid'}>
       <div className={'row'}>
         <div className={'col-sm-1'}></div>
-        <div className={'col-sm-6'}>
-          <Game ip={param.ip} gaming={gaming}/>
+        <div className={'col-sm-6'} style={{zIndex : 1}}>
+          <Game gaming={gaming} ws={ws} chatt={chatt} socketData={socketData} turn={turn}/>
         </div>
-        <div className={'col-sm-4'}>
-          <Chat gaming={setGaming} ws={ws} chatt={chatt} socketData={socketData}/>
+        <div className={'col-sm-4'} style={{zIndex : 9999}}>
+          <Chat gaming={setGaming} ws={ws} chatt={chatt} socketData={socketData} turn={setTurn} />
         </div>
         <div className={'col-sm-1'}></div>
       </div>

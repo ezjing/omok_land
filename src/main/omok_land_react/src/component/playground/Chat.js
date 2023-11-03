@@ -131,6 +131,7 @@ function Chat(props) {
       const temp = JSON.stringify(data);
 
       props.ws.current.send(temp);
+      props.turn(name)
 
     }
     // 채팅방 나갔다가 재입장할 경우

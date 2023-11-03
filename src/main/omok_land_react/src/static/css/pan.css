@@ -4,13 +4,24 @@
     position: relative;
 }
 
-.hover {
+.active-black {
+    position: absolute;
+    top: 5%;
+    left: 5%;
+    width: 90%;
+    height: 90%;
+    background-color: #000;
+    opacity: 1;
+    border: 2px solid #000;
+    border-radius: 50%;
+}
+.hover-black {
     position: absolute;
     width: 95%;
     height: 95%;
 }
 
-.hover:hover {
+.hover-black:hover {
     position: absolute;
     top: 5%;
     left: 5%;
@@ -19,6 +30,35 @@
     background-color: #000;
     opacity: 0.5;
     border: 2px solid #000;
+    border-radius: 50%;
+}
+
+.active-white {
+    position: absolute;
+    top: 5%;
+    left: 5%;
+    width: 90%;
+    height: 90%;
+    background-color: #fff;
+    opacity: 1;
+    border: 2px solid #000;
+    border-radius: 50%;
+}
+.hover-white {
+    position: absolute;
+    width: 95%;
+    height: 95%;
+}
+
+.hover-white:hover {
+    position: absolute;
+    top: 5%;
+    left: 5%;
+    width: 90%;
+    height: 90%;
+    background-color: #fff;
+    opacity: 0.5;
+    border: 2px solid #fff;
     border-radius: 50%;
 }
 
