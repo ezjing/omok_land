@@ -11,12 +11,10 @@ import {Button} from "@mui/material";
 function Chat(props) {
   const [msg, setMsg] = useState("");
   const [name, setName] = useState("");
-  // const [ws, setWs] = useState(props.ws);
-  // const [chatt, setChatt] = useState([]);
   const [chkLog, setChkLog] = useState(false);
   const [chatQuit, setChatQuit] = useState(false);
-  // const [socketData, setSocketData] = useState();
   const [ip, setIp] = useState(props.ip);
+  const [ws, setWs] = useState(props.ws);
 
   
   const scrollRef = useRef();
@@ -87,12 +85,7 @@ function Chat(props) {
     }
   })
 
-  // useEffect(() => {
-  //   setChatt(props.chatt);
-  //   setSocketData(props.socketData);
-  // }, [props.socketData]);
 
-  
   const GlobalStyle = createGlobalStyle`  //css 초기화가 된 component
   ${reset}
   `;
@@ -100,7 +93,6 @@ function Chat(props) {
   // 채팅창 밑으로 내리는 훅
   useEffect(() => {
     scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
-
   }, [props.chatt]);
   
   
@@ -129,10 +121,16 @@ function Chat(props) {
       };  //전송 데이터(JSON)
 
       const temp = JSON.stringify(data);
-
-      props.ws.current.send(temp);
+      if (ws.current.readyState === 0) {
+        ws.current.onopen = () => {
+          console.log(ws.current.readyState);
+          ws.current.send(temp);
+        }
+      }
+      else {
+        ws.current.send(temp);
+      }
       props.turn(name)
-
     }
     // 채팅방 나갔다가 재입장할 경우
     else if (!chkLog && chatQuit) {
@@ -146,7 +144,7 @@ function Chat(props) {
       };  //전송 데이터(JSON)
       const temp = JSON.stringify(data);
 
-      props.ws.current.send(temp);
+      ws.current.send(temp);
 
       setChatQuit(false);
       setMsg("");
@@ -166,7 +164,15 @@ function Chat(props) {
   
       const temp = JSON.stringify(data);
 
-      props.ws.current.send(temp);
+      if (ws.current.readyState === 0) {
+        ws.current.onopen = () => {
+          console.log(ws.current.readyState);
+          ws.current.send(temp);
+        }
+      }
+      else {
+        ws.current.send(temp);
+      }
     }
     else {
       alert("채팅방 입장 시 가능합니다.");
@@ -186,7 +192,15 @@ function Chat(props) {
     
         const temp = JSON.stringify(data);
 
-        props.ws.current.send(temp);
+        if (ws.current.readyState === 0) {
+          ws.current.onopen = () => {
+            console.log(ws.current.readyState);
+            ws.current.send(temp);
+          }
+        }
+        else {
+          ws.current.send(temp);
+        }
       }
       else {
         alert("메세지를 입력하세요.");
@@ -211,7 +225,15 @@ function Chat(props) {
   
     const temp = JSON.stringify(data);
 
-    props.ws.current.send(temp);
+    if (ws.current.readyState === 0) {
+      ws.current.onopen = () => {
+        console.log(ws.current.readyState);
+        ws.current.send(temp);
+      }
+    }
+    else {
+      ws.current.send(temp);
+    }
 
     setMsg('채팅방을 나가셨습니다.');
     setChatQuit(true);

@@ -33,6 +33,7 @@ function PlayGround(props) {
       const tempData = chatt.concat(socketData);
       console.log(tempData);
       setChatt(tempData);
+
       if(!gaming && tempData.filter(item => item.msg === 'join' ? item : "").length === 2){
         setGaming(true)
       }
@@ -48,7 +49,7 @@ function PlayGround(props) {
           <Game gaming={gaming} ws={ws} chatt={chatt} socketData={socketData} turn={turn}/>
         </div>
         <div className={'col-sm-4'} style={{zIndex : 9999}}>
-          <Chat gaming={setGaming} ws={ws} chatt={chatt} socketData={socketData} turn={setTurn} />
+          <Chat gaming={setGaming} ip={param.ip} ws={ws} chatt={chatt} socketData={socketData} turn={setTurn} />
         </div>
         <div className={'col-sm-1'}></div>
       </div>

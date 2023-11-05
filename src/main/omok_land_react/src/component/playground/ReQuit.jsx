@@ -6,48 +6,23 @@ import {useNavigate} from "react-router-dom";
 
 function ReQuit(props) {
   const [msg, setMsg] = useState("");
-  // const [chatt, setChatt] = useState([]);
-  // const [socketData, setSocketData] = useState();
-  const [ip, setIp] = useState();
+  const [chatt, setChatt] = useState([]);
+  const [socketData, setSocketData] = useState();
+  const [ip, setIp] = useState(props.ip);
   const [ws, setWs] = useState(props.ws);
   const [visible, setVisible] = useState(true);
   
   const navi = useNavigate();
   
-  // useEffect(() => {
-  //   setChatt(props.chatt);
-  //   setSocketData(props.socketData);
-  //
-  // }, [props.socketData]);
+  useEffect(() => {
+    setChatt(props.chatt);
+    setSocketData(props.socketData);
+
+  }, [props.socketData]);
 
   
   // 재경기 요청
   const reGame = () => {
-    axios.get(`http://localhost:8080/server/getIp`) // ip 호출 axios
-    .then(res => {
-      console.log(res.data);
-      const data = {
-        name : props.name,
-        topic : 'apply',
-        msg : 'regame',
-        ip : res.data,
-        date: new Date().toLocaleString(),
-      };  //전송 데이터(JSON)
-
-      const temp = JSON.stringify(data);
-      console.log(temp);
-
-      props.ws.current.send(temp);
-    })
-    .catch(err => {
-      alert(`통신 실패`);
-    });
-
-
-  }
-  
-  // 재경기 수락
-  const accept = () => {
     axios.get(`http://localhost:8080/server/getIp`) // ip 호출 axios
       .then(res => {
         console.log(res.data);
@@ -56,11 +31,33 @@ function ReQuit(props) {
       .catch(err => {
         alert(`통신 실패`);
       });
+    const data = {
+      name : props.name,
+      topic : 'apply',
+      msg : 'regame',
+      ip : ip,
+      date: new Date().toLocaleString(),
+    };  //전송 데이터(JSON)
+
+    const temp = JSON.stringify(data);
+    if (ws.current.readyState === 0) {
+      ws.current.onopen = () => {
+        console.log(ws.current.readyState);
+        ws.current.send(temp);
+      }
+    }
+    else {
+      ws.current.send(temp);
+    }
+  }
   
+  // 재경기 수락
+  const accept = () => {
     const data = {
       name : props.name,
       topic : 'answer',
-      msg : ip,
+      msg : 'yes',
+      ip : props.socketData.ip,
       date: new Date().toLocaleString(),
     };  //전송 데이터(JSON)
   
@@ -74,9 +71,8 @@ function ReQuit(props) {
     } else {
       ws.current.send(temp);
     }
+    navi(`/playground/${props.socketData.ip}`);
     window.location.reload();
-    navi(`/playground/111`);
-    
   }
   
   // 재경기 거절
@@ -84,7 +80,7 @@ function ReQuit(props) {
     const data = {
       name : props.name,
       topic : 'answer',
-      msg : 'reject',
+      msg : 'no',
       date: new Date().toLocaleString(),
     };  //전송 데이터(JSON)
   
@@ -125,7 +121,7 @@ function ReQuit(props) {
   
   // 재경기 요청 창(상대에게)
   const regameModal = props.chatt.filter(item1 => item1.topic === 'apply').map((item, idx) => {
-    if (item.msg === 'regame' && item.name !== props.name) {
+    if (item.msg === 'regame' && item.name !== props.name && idx === 0) {
       return (
         <div className="card border-5 border-black" style={{width: '100%', zIndex : 9999}}>
           <div className="card-body">
@@ -143,9 +139,10 @@ function ReQuit(props) {
   
   // 재경기 요청 결과 창
   const regameResult = props.chatt.filter(item1 => item1.topic === 'answer').map((item, idx) => {
-    if (item.msg === 'reject' && item.name !== props.name && visible === true) {
+    // 상대가 거절한 경우
+    if (item.msg === 'no' && item.name !== props.name && visible === true && idx === 0) {
       return (
-        <div className="card border-5 border-black" style={{width: '100%'}}>
+        <div className="card border-5 border-black" style={{width: '100%', zIndex : 9999}}>
           <div className="card-body">
             <h5 className="card-title fs-5 fw-bold">재경기 요청</h5>
             <span>상대방이 재경기를 거절하였습니다.</span>
@@ -158,16 +155,17 @@ function ReQuit(props) {
         </div>
       )
     }
-    else if (item.msg !== 'reject' && item.name !== props.name && visible === true) {
+    // 상대가 수락한 경우
+    else if (item.msg === 'yes' && item.name !== props.name && visible === true && idx === 0) {
       return (
-        <div className="card border-5 border-black" style={{width: '100%'}}>
+        <div className="card border-5 border-black" style={{width: '100%', zIndex : 9999}}>
           <div className="card-body">
             <h5 className="card-title fs-5 fw-bold">재경기 요청</h5>
             <span>상대방이 재경기를 수락하였습니다.</span>
             <div className={'d-flex justify-content-end mt-2'}>
               <button type={'button'} className="btn btn-primary me-2" onClick={() => {
+                navi(`/playground/${item.ip}`);
                 window.location.reload();
-                navi(`/playground/${item.msg}`);
               }}>확인</button>
             </div>
           </div>
@@ -178,9 +176,9 @@ function ReQuit(props) {
   
   // 대국방 퇴장 알림 창
   const gameInOut = props.chatt.filter(item1 => item1.topic === 'game').map((item, idx) => {
-    if (item.msg === 'exit' && item.name !== props.name && visible === true) {
+    if (item.msg === 'exit' && item.name !== props.name && visible === true && idx === 0) {
       return (
-        <div className="card border-5 border-black" style={{width: '100%'}}>
+        <div className="card border-5 border-black" style={{width: '100%', zIndex : 9999}}>
           <div className="card-body">
             <h5 className="card-title fs-5 fw-bold">탈주닌자 발생</h5>
             <span>상대방이 대국방을 나갔습니다.</span>
