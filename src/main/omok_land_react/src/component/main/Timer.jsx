@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {Box, Button, Stack} from "@mui/material";
+import {Box, Button, IconButton, Stack} from "@mui/material";
 import TimerIcon from '@mui/icons-material/Timer';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import ReplayIcon from '@mui/icons-material/Replay';
@@ -54,17 +54,18 @@ function Timer(props) {
 
     return (
         <Box sx={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
-            <TimerIcon/>
+            {/*<IconButton sx={{color: 'black'}} disabled><TimerIcon/></IconButton>*/}
+            <TimerIcon sx={{margin: 1}}/>
             <p id={'text-color'}>
                 {time.seconds}:
                 {time.milliseconds < 10 ? "0" : ""}{/* 10보다 작아지면 0을 출력하며 자릿수를 채워주는 역할을 함. 09, 08, 07 ... 이런식으로 출력 되게끔 */}
                 {time.milliseconds}{/* 실질적으로 milliseconds를 출력하는 부분 */}
             </p>
-            <Stack spacing={2} direction="row" sx={{marginLeft: 2}}>
-                <Button variant={'text'} endIcon={<PlayArrowIcon/>} onClick={startTimer}>시작</Button>
-                <Button variant={'contained'} endIcon={<PauseIcon/>} onClick={() => setRunning(false)}>일시정지</Button>
-                <Button variant={'outlined'} endIcon={<ReplayIcon/>} onClick={() => setTime({ seconds: 60, milliseconds: 0 })}>재시작</Button>
-            </Stack>
+            {/*<Stack spacing={2} direction="row" sx={{marginLeft: 2}}>*/}
+            {/*    <Button variant={'text'} endIcon={<PlayArrowIcon/>} onClick={startTimer}>시작</Button>*/}
+            {/*    <Button variant={'contained'} endIcon={<PauseIcon/>} onClick={() => setRunning(false)}>일시정지</Button>*/}
+            {/*    <Button variant={'outlined'} endIcon={<ReplayIcon/>} onClick={() => setTime({ seconds: 60, milliseconds: 0 })}>재시작</Button>*/}
+            {/*</Stack>*/}
         </Box>
     );
 }

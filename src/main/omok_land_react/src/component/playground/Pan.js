@@ -11,7 +11,7 @@ function Pan(props) {
     props.coordinate(`${row}, ${col}`)
   }
   return (
-    <div className={'mx-auto my-5'} style={{height: '100%'}}>
+    <div className={'mx-auto my-3'} style={{height: '100%'}}>
       <div className={"omok-board box"}>
         {/*기본 19칸 15칸으로 변경하면 css도 바꿔줘야함*/}
         {Array.from({length: 15}, (_, rowIndex) => (
