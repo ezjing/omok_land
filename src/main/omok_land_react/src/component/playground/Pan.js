@@ -9,28 +9,29 @@ function Pan(props) {
 
   const [lastColor, setLastColor] = useState('')
   const clickHandler = (row, col) => {
-    props.coordinate(`${row}, ${col}`)
+    // 좌표 전달하기 전에 빈값인지 확인
+    if(props.gameArr.filter(item => item.coordinate === `${row}, ${col}`).length > 0) {
+      alert('이미 놓아진 곳에는 둘 수 없습니다.')
+    }else if(lastColor === props.color){
+      alert('상대의 차례입니다.')
+    }
+    else{
+      props.coordinate(`${row}, ${col}`)
+    }
   }
 
   useEffect(() => {
     // 마지막 색깔 추출해서 스테이트 저장
-    // if(props.gameArr.length > 0) {
-    //   setLastColor(props.gameArr[props.gameArr.length - 1].color)
-    //
-    //   let [x, y] = props.gameArr[props.gameArr.length - 1].coordinate.split(', ');
-    //
-    //   let div = document.getElementById(`${x}:${y}`)
-    //   let colorClass = `active-${props.color}`;
-    //
-    //   div.className += colorClass;
-    //   console.log(div)
-    // }
+    if(props.gameArr.length > 0) {
+
+      setLastColor(props.gameArr[props.gameArr.length - 1].color)
+
+    }
 
   }, [props.gameArr]);
 
   useEffect(() => {
 
-    console.log(lastColor)
   }, [lastColor]);
 
   return (
@@ -51,14 +52,8 @@ function Pan(props) {
                       props.gameArr.filter(item => item.coordinate === `${rowIndex}, ${colIndex}`).length > 0
                         ? `active-${props.gameArr.filter(item => item.coordinate === `${rowIndex}, ${colIndex}`)[0].color}`
                         :
-                        props.gaming && (props.gameArr.length === 0 || (lastColor === 'white' && props.color === 'black')) ? "hover-black"
+                        props.gaming && ((props.gameArr.length === 0 && props.color === 'black') || (lastColor === 'white' && props.color === 'black')) ? "hover-black"
                           : props.gaming && lastColor === 'black' && props.color === 'white' ? "hover-white" : ""
-                      // :
-                          // 선공일떄(첫턴)
-                          // (props.gameArr.length === 0 && props.color === "black") || (props.color === "black" && lastColor === "white") ? "hover-black" :
-                          //   // 주고받을때
-                          //   (lastColor === "black" && props.color === "white") ? "hover-white" : ""
-                          // : ""
                     }>
                     </div>
                     <hr className="horizontal-line my-0" style={rowIndex === 0 ? {
@@ -72,7 +67,13 @@ function Pan(props) {
                   // 아래쪽
                   colIndex === 14 ?
                     <div className="cross-container">
-                      <div className={props.gaming && lastColor !== props.color ? props.color === 'black' ? "hover-black" : "hover-white" : "" }></div>
+                      <div className={
+                        props.gameArr.filter(item => item.coordinate === `${rowIndex}, ${colIndex}`).length > 0
+                          ? `active-${props.gameArr.filter(item => item.coordinate === `${rowIndex}, ${colIndex}`)[0].color}`
+                          :
+                          props.gaming && ((props.gameArr.length === 0 && props.color === 'black') || (lastColor === 'white' && props.color === 'black')) ? "hover-black"
+                              : props.gaming && lastColor === 'black' && props.color === 'white' ? "hover-white" : ""
+                      }></div>
                       <hr className="horizontal-line my-0" style={rowIndex === 0 ? {
                         width: '50%',
                         left: '50%'
@@ -84,7 +85,13 @@ function Pan(props) {
                     // 왼쪽
                     rowIndex === 0 ?
                       <div className="cross-container">
-                        <div className={props.gaming ? props.color === 'black' ? "hover-black" : "hover-white" : "" }></div>
+                          <div className={
+                              props.gameArr.filter(item => item.coordinate === `${rowIndex}, ${colIndex}`).length > 0
+                                  ? `active-${props.gameArr.filter(item => item.coordinate === `${rowIndex}, ${colIndex}`)[0].color}`
+                                  :
+                                  props.gaming && ((props.gameArr.length === 0 && props.color === 'black') || (lastColor === 'white' && props.color === 'black')) ? "hover-black"
+                                      : props.gaming && lastColor === 'black' && props.color === 'white' ? "hover-white" : ""
+                          }></div>
                         <hr className="horizontal-line my-0"
                             style={{width: '50%', left: '50%'}}/>
                         <hr className="vertical-line my-0"/>
@@ -94,7 +101,13 @@ function Pan(props) {
                       // 오른쪽
                       rowIndex === 14 ?
                         <div className="cross-container">
-                          <div className={props.gaming ? props.color === 'black' ? "hover-black" : "hover-white" : "" }></div>
+                            <div className={
+                                props.gameArr.filter(item => item.coordinate === `${rowIndex}, ${colIndex}`).length > 0
+                                    ? `active-${props.gameArr.filter(item => item.coordinate === `${rowIndex}, ${colIndex}`)[0].color}`
+                                    :
+                                    props.gaming && ((props.gameArr.length === 0 && props.color === 'black') || (lastColor === 'white' && props.color === 'black')) ? "hover-black"
+                                        : props.gaming && lastColor === 'black' && props.color === 'white' ? "hover-white" : ""
+                            }></div>
                           <hr className="horizontal-line my-0" style={{width: '50%'}}/>
                           <hr className="vertical-line my-0"/>
 
@@ -102,7 +115,13 @@ function Pan(props) {
                         // 나머지
                         :
                         <div className="cross-container">
-                          <div className={props.gaming ? props.color === 'black' ? "hover-black" : "hover-white" : "" }></div>
+                            <div className={
+                                props.gameArr.filter(item => item.coordinate === `${rowIndex}, ${colIndex}`).length > 0
+                                    ? `active-${props.gameArr.filter(item => item.coordinate === `${rowIndex}, ${colIndex}`)[0].color}`
+                                    :
+                                    props.gaming && ((props.gameArr.length === 0 && props.color === 'black') || (lastColor === 'white' && props.color === 'black')) ? "hover-black"
+                                        : props.gaming && lastColor === 'black' && props.color === 'white' ? "hover-white" : ""
+                            }></div>
                           <hr className="horizontal-line my-0"/>
                           <hr className="vertical-line my-0"/>
 

@@ -31,12 +31,10 @@ function PlayGround(props) {
     if(socketData !== undefined) {
 
       const tempData = chatt.concat(socketData);
-      console.log(tempData);
       setChatt(tempData);
       if(!gaming && tempData.filter(item => item.msg === 'join' ? item : "").length === 2){
         setGaming(true)
       }
-      console.log(tempData.filter(item => item.topic === 'game'))
     }
   }, [socketData]);
 
