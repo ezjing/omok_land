@@ -7,7 +7,6 @@ import {BrowserRouter, Route, Routes} from "react-router-dom";
 import Timer from "./component/main/Timer";
 import Game from "./component/playground/Game";
 import PlayGround from "./component/playground/PlayGround";
-import Pop from "./component/playground/Pop";
 
 function App() {
     return (
@@ -19,7 +18,6 @@ function App() {
                     <Route path={'/timer'} element={<Timer/>}/>
                     <Route path={'/game'} element={<Game/>}/>
                     <Route path={'/pan'} element={<Pan/>}/>
-                    <Route path={'/pop'} element={<Pop/>}/>
                 </Routes>
             </BrowserRouter>
             {/*<Pan/>*/}

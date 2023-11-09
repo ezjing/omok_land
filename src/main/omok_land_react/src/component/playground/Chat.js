@@ -3,15 +3,10 @@ import {createGlobalStyle} from 'styled-components';
 import reset from 'styled-reset';
 import '../../static/css/chat.css';
 import ReQuit from "./ReQuit";
-import Accordion from '@mui/material/Accordion';
-import AccordionSummary from '@mui/material/AccordionSummary';
-import AccordionDetails from '@mui/material/AccordionDetails';
-import {Box, Button, Fab, IconButton, Popover, Typography} from "@mui/material";
+import {Box, Button, Fab, Popover} from "@mui/material";
 import InsertEmoticonIcon from '@mui/icons-material/InsertEmoticon';
-import {styled, useTheme} from "@mui/material/styles";
 
 function Chat(props) {
-    const theme = useTheme();
     const [msg, setMsg] = useState("");
     const [name, setName] = useState("");
     const [chatt, setChatt] = useState([]);
@@ -265,7 +260,7 @@ function Chat(props) {
     return (
         <>
             <GlobalStyle/>
-            <div className={'p-0 m-0'} id="chat-wrap"
+            <div className={'m-0'} id="chat-wrap"
                  style={{display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center'}}>
                 <div id='chatt'>
                     <h1 id="title">오목랜드 채팅방</h1>
@@ -274,7 +269,7 @@ function Chat(props) {
                          sx={{
                              float: 'right',
                              position: 'absolute',
-                             transform: 'translateY(340%) translateX(580%)',
+                             transform: 'translateY(340%) translateX(560%)',
                              margin: 1,
                          }}>
                         <InsertEmoticonIcon color={'primary'} fontSize={'large'}/>
@@ -295,23 +290,66 @@ function Chat(props) {
                         }}
                     >
                         <Box sx={{
-                            // backgroundColor: 'lightblue',
-                            // border: '2px solid blue',
                             borderRadius: '20px',
                             width: '200px',
                             height: '580px',
                         }}>
                             {/*이모티콘 자리*/}
-                            {/*<Button value={'1'} onClick={emoSend} variant="outlined">개꿀띠</Button>*/}
-                            {/*<Button value={'2'} onClick={emoSend} variant="outlined">포커페이스</Button>*/}
-                            {/*<Button value={'3'} onClick={emoSend} variant="outlined">고민중</Button>*/}
-                            {/*<Button value={'4'} onClick={emoSend} variant="outlined">당황</Button>*/}
-                            {/*<Button value={'5'} onClick={emoSend} variant="outlined">빨리빨리</Button>*/}
-                            <Button value={'1'} onClick={emoSend}><img src="/img/main/star.png" alt="" style={{width: '80%'}}/></Button>
-                            <Button value={'2'} onClick={emoSend}><img src="/img/main/nerd.png" alt="" style={{width: '80%'}}/></Button>
-                            <Button value={'3'} onClick={emoSend}><img src="/img/main/serious.png" alt="" style={{width: '80%'}}/></Button>
-                            <Button value={'4'} onClick={emoSend}><img src="/img/main/awkward.png" alt="" style={{width: '80%'}}/></Button>
-                            <Button value={'5'} onClick={emoSend}><img src="/img/main/shouting.png" alt="" style={{width: '80%'}}/></Button>
+                            <div className={'position-relative'} style={{width: '200px', height: '200px'}}>
+                                <Button value={'1'} onClick={emoSend} style={{zIndex: 5, width: '100%', height: '100%'}}
+                                        className={'position-absolute'}></Button>
+                                <img src="/img/main/star.png" alt="" style={{
+                                    width: '80%',
+                                    zIndex: 1,
+                                    position: 'absolute',
+                                    left: '10%',
+                                    marginTop: '10%'
+                                }}/>
+                            </div>
+                            <div className={'position-relative'} style={{width: '200px', height: '200px'}}>
+                                <Button value={'2'} onClick={emoSend} style={{zIndex: 5, width: '100%', height: '100%'}}
+                                        className={'position-absolute'}></Button>
+                                <img src="/img/main/nerd.png" alt="" style={{
+                                    width: '80%',
+                                    zIndex: 1,
+                                    position: 'absolute',
+                                    left: '10%',
+                                    marginTop: '10%'
+                                }}/>
+                            </div>
+                            <div className={'position-relative'} style={{width: '200px', height: '200px'}}>
+                                <Button value={'3'} onClick={emoSend} style={{zIndex: 5, width: '100%', height: '100%'}}
+                                        className={'position-absolute'}></Button>
+                                <img src="/img/main/serious.png" alt="" style={{
+                                    width: '80%',
+                                    zIndex: 1,
+                                    position: 'absolute',
+                                    left: '10%',
+                                    marginTop: '10%'
+                                }}/>
+                            </div>
+                            <div className={'position-relative'} style={{width: '200px', height: '200px'}}>
+                                <Button value={'4'} onClick={emoSend} style={{zIndex: 5, width: '100%', height: '100%'}}
+                                        className={'position-absolute'}></Button>
+                                <img src="/img/main/awkward.png" alt="" style={{
+                                    width: '80%',
+                                    zIndex: 1,
+                                    position: 'absolute',
+                                    left: '10%',
+                                    marginTop: '10%'
+                                }}/>
+                            </div>
+                            <div className={'position-relative'} style={{width: '200px', height: '200px'}}>
+                                <Button value={'5'} onClick={emoSend} style={{zIndex: 5, width: '100%', height: '100%'}}
+                                        className={'position-absolute'}></Button>
+                                <img src="/img/main/shouting.png" alt="" style={{
+                                    width: '80%',
+                                    zIndex: 1,
+                                    position: 'absolute',
+                                    left: '10%',
+                                    marginTop: '10%'
+                                }}/>
+                            </div>
                         </Box>
                     </Popover>
                     <div id='talk' ref={scrollRef}>
@@ -336,33 +374,6 @@ function Chat(props) {
                                    onClick={chatExit}/>
                         </div>
                     </div>
-
-
-                    {/*감정표현 선택*/}
-                    {/*<div className={'mt-2'}>*/}
-                    {/*  <Accordion>*/}
-                    {/*    <AccordionSummary*/}
-                    {/*      aria-controls="panel1a-content"*/}
-                    {/*      id="panel1a-header"*/}
-                    {/*    style={{padding: '0px'}}>*/}
-                    {/*      <div className={'d-flex align-items-center ms-3'}>*/}
-                    {/*        <i className="bi bi-outlet" style={{fontSize : '30px', color: 'royalblue'}}></i>*/}
-                    {/*        <p className={'ms-2 fw-bold fs-6'} style={{color: 'royalblue'}}>감정표현</p>*/}
-                    {/*      </div>*/}
-
-                    {/*    </AccordionSummary>*/}
-                    {/*    <AccordionDetails>*/}
-                    {/*        <div id={'emotion'}>*/}
-                    {/*          <Button value={'1'} onClick={emoSend} variant="outlined">개꿀띠</Button>*/}
-                    {/*          <Button value={'2'} onClick={emoSend} variant="outlined">포커페이스</Button>*/}
-                    {/*          <Button value={'3'} onClick={emoSend} variant="outlined">고민중</Button>*/}
-                    {/*          <Button value={'4'} onClick={emoSend} variant="outlined">당황</Button>*/}
-                    {/*          <Button value={'5'} onClick={emoSend} variant="outlined">빨리빨리</Button>*/}
-                    {/*        </div>*/}
-                    {/*    </AccordionDetails>*/}
-                    {/*  </Accordion>*/}
-                    {/*</div>*/}
-
 
                     {/*채팅메시지*/}
                     <div id='sendZone' className={'input-group mt-2'}>
