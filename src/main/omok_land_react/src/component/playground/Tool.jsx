@@ -62,7 +62,13 @@ function Tool(props) {
     };
 
     const handleSurrender = () => {
-
+        alert('항복하시겠습니까?'); // 모달로하기
+        // if () {
+        //     승리 모달
+        // }
+        // else {
+        //     재경기 모달 닫기
+        // }
     };
 
     return (
