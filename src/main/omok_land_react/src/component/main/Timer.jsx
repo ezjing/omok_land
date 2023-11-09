@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {Box, Button, IconButton, Stack} from "@mui/material";
+import {Box, Button, IconButton, Stack, ThemeProvider} from "@mui/material";
 import TimerIcon from '@mui/icons-material/Timer';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import ReplayIcon from '@mui/icons-material/Replay';
@@ -8,6 +8,8 @@ import PauseIcon from '@mui/icons-material/Pause';
 function Timer(props) {
     const [time, setTime] = useState({ seconds: 60, milliseconds: 0 }); // milliseconds는 소수점 첫번째 자리까지 해당
     const [running, setRunning] = useState(false);
+
+    const theme = props.theme;
 
     useEffect(() => {
         let interval;
@@ -54,13 +56,15 @@ function Timer(props) {
 
     return (
         <Box sx={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
-            {/*<IconButton sx={{color: 'black'}} disabled><TimerIcon/></IconButton>*/}
-            <TimerIcon sx={{margin: 1}}/>
-            <p id={'text-color'}>
-                {time.seconds}:
-                {time.milliseconds < 10 ? "0" : ""}{/* 10보다 작아지면 0을 출력하며 자릿수를 채워주는 역할을 함. 09, 08, 07 ... 이런식으로 출력 되게끔 */}
-                {time.milliseconds}{/* 실질적으로 milliseconds를 출력하는 부분 */}
-            </p>
+            <ThemeProvider theme={theme}>
+                <TimerIcon sx={{margin: 1}} color={'bluegray'}/>
+
+                <p id={'text-color'} className={'text-white'}>
+                    {time.seconds}:
+                    {time.milliseconds < 10 ? "0" : ""}{/* 10보다 작아지면 0을 출력하며 자릿수를 채워주는 역할을 함. 09, 08, 07 ... 이런식으로 출력 되게끔 */}
+                    {time.milliseconds}{/* 실질적으로 milliseconds를 출력하는 부분 */}
+                </p>
+            </ThemeProvider>
         </Box>
     );
 }

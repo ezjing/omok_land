@@ -20,10 +20,10 @@ function PlayGround(props) {
             overflow: 'hidden'}}>
             <div className={'row'}>
                 <div className={'col-sm-1'}></div>
-                <div className={'col-sm-6'}>
+                <div className={'col-sm-6'} style={{zIndex : 1}}>
                     <Game ip={param.ip} gaming={gaming}/>
                 </div>
-                <div className={'col-sm-4'}>
+                <div className={'col-sm-4'} style={{zIndex : 3}}>
                     <Tool/>
                     <Chat ip={param.ip} gaming={setGaming}/>
                 </div>
