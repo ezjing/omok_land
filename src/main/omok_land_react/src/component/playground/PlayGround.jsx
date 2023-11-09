@@ -3,6 +3,8 @@ import Chat from "./Chat";
 import {useLocation, useParams} from "react-router-dom";
 import Game from "./Game";
 import ReQuit from "./ReQuit";
+import Tool from "./Tool";
+import {Box} from "@mui/material";
 
 function PlayGround(props) {
 
@@ -40,18 +42,22 @@ function PlayGround(props) {
   }, [socketData]);
 
   return (
-    <div className={'container-fluid'}>
+    <Box sx={{height: '100vh',
+      padding: '0',
+      margin: '0',
+      overflow: 'hidden'}}>
       <div className={'row'}>
         <div className={'col-sm-1'}></div>
         <div className={'col-sm-6'} style={{zIndex : 1}}>
           <Game gaming={gaming} ws={ws} chatt={chatt} socketData={socketData} turn={turn}/>
         </div>
         <div className={'col-sm-4'} style={{zIndex : 9999}}>
+          <Tool/>
           <Chat gaming={setGaming} ip={param.ip} ws={ws} chatt={chatt} socketData={socketData} turn={setTurn} />
         </div>
         <div className={'col-sm-1'}></div>
       </div>
-    </div>
+    </Box>
   )
 }
 

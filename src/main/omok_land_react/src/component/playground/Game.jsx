@@ -78,7 +78,7 @@ function Game(props) {
 
         // 빈배열에 착수 기록 업데이트
         props.chatt.filter(item1 => item1.topic === "game" ? item1 : "").map((item2) =>{
-
+          console.log(item2)
           let [x1, y1] = item2.coordinate.split(', ')
 
           if(+y1 === y) {
