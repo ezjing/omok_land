@@ -129,6 +129,7 @@ function Chat(props) {
         ws.current.send(temp);
       }
       props.turn(name)
+      props.name(name)
     }
     // 채팅방 나갔다가 재입장할 경우
     else if (!chkLog && chatQuit) {

@@ -12,6 +12,7 @@ function Game(props) {
   const [color, setColor] = useState('');    // 검정 선
   const [chatt, setChatt] = useState([]);
   const [chkLog, setChkLog] = useState(false);
+  const [finish, setFinish] = useState(false);
   // const [socketData, setSocketData] = useState();
   // const [ip, setIp] = useState(props.ip);
 
@@ -20,27 +21,39 @@ function Game(props) {
   useEffect(() => {
 
     // ( 실제 적용 시)
-  //   axios.get(`http://localhost:8080/server/getIp`) // ip 호출 axios
-  //   .then(res => {
-  //
-  //     param.ip === res.data ? setColor('black') : setColor('white');
-  //   })
-  //   .catch(err => {
-  //     alert(`통신 실패`);
-  //   });
+    //   axios.get(`http://localhost:8080/server/getIp`) // ip 호출 axios
+    //   .then(res => {
+    //
+    //     param.ip === res.data ? setColor('black') : setColor('white');
+    //   })
+    //   .catch(err => {
+    //     alert(`통신 실패`);
+    //   });
 
 
   }, []);
 
   useEffect(() => {
     // 임시
-    if(props.chatt.length > 0) {
+    if (props.chatt.length > 0) {
+
       setColor(props.chatt.filter(item => item.msg === 'join')[0].name === props.turn ? 'black' : 'white')
+
+      if (props.chatt.filter(item => item.topic === 'finish' ? item : "").length > 0) {
+        let winner = props.chatt.filter(item => item.topic === 'finish' ? item : "")[0].color
+        if (winner === color) {
+          // 승리 루트
+          alert(`승리 : ${color}`)
+        } else if (winner !== color) {
+          // 패배 루트
+          alert(`패배 : ${color}`)
+        }
+      }
     }
   }, [props.chatt]);
 
   useEffect(() => {
-    
+
     // 좌표 클릭시 이벤트
     if (props.gaming) {
 
@@ -77,20 +90,20 @@ function Game(props) {
         let filtered2 = daegak2.map(item => item[0]);
 
         // 빈배열에 착수 기록 업데이트
-        props.chatt.filter(item1 => item1.topic === "game" ? item1 : "").map((item2) =>{
-          console.log(item2)
+        props.chatt.filter(item1 => item1.topic === "game" ? item1 : "").map((item2) => {
+
           let [x1, y1] = item2.coordinate.split(', ')
 
-          if(+y1 === y) {
+          if (+y1 === y) {
             garo[x1] = [item2.coordinate, item2.color]
           }
-          if(+x1 === x) {
+          if (+x1 === x) {
             sero[y1] = [item2.coordinate, item2.color]
           }
-          if(filtered1.indexOf(item2.coordinate) !== -1){
+          if (filtered1.indexOf(item2.coordinate) !== -1) {
             daegak1[filtered1.indexOf(item2.coordinate)] = [item2.coordinate, item2.color];
           }
-          if(filtered2.indexOf(item2.coordinate) !== -1) {
+          if (filtered2.indexOf(item2.coordinate) !== -1) {
             daegak2[filtered2.indexOf(item2.coordinate)] = [item2.coordinate, item2.color];
           }
         })
@@ -100,8 +113,8 @@ function Game(props) {
         sero[coordinate.split(', ')[1]] = [coordinate, color]
         daegak1[0] = [coordinate, color]
         daegak2[0] = [coordinate, color]
-        daegak1.sort((a,b) => a[0].split(', ')[0] - b[0].split(', ')[0]);
-        daegak2.sort((a,b) => a[0].split(', ')[0] - b[0].split(', ')[0]);
+        daegak1.sort((a, b) => a[0].split(', ')[0] - b[0].split(', ')[0]);
+        daegak2.sort((a, b) => a[0].split(', ')[0] - b[0].split(', ')[0]);
 
         // console.log(garo)
         // console.log(sero)
@@ -114,59 +127,77 @@ function Game(props) {
         garo.map((item) => {
           item[1] === color ? cnt++ : cnt = 0;
           if (cnt === 5) {
-            alert('###################승리##################')
-            // 승리 이후 루트 고민해야함
+            setFinish(true)
           }
         })
+        cnt = 0;
         // 세로 검사
         sero.map((item) => {
           item[1] === color ? cnt++ : cnt = 0;
           if (cnt === 5) {
-            alert('###################승리##################')
+            setFinish(true)
           }
         })
+        cnt = 0;
         // 대각선 검사
         daegak1.map((item) => {
           item[1] === color ? cnt++ : cnt = 0;
           if (cnt === 5) {
-            alert('###################승리##################');
+            setFinish(true);
           }
         });
+        cnt = 0;
         daegak2.map((item) => {
           item[1] === color ? cnt++ : cnt = 0;
           if (cnt === 5) {
-            alert('###################승리##################');
+            setFinish(true);
           }
         });
 
         // 금수
-        
+
+        // 착수 좌표의 가로 상의 열린 3 카운트
+
+        // 왼쪽
+        console.log(garo)
+        console.log(coordinate)
+        // 중간
+
+        // 오른쪽
+
         // 좌표 기준의 가로, 세로 대각선의 4칸까지 필터 해줘야함
 
       }
 
-        // 해당 없을 경우 착수
-        if (coordinate !== "") {
-          const data = {  // 이름, 메시지, 날짜 저장
-            topic: 'game',
-            color,
-            coordinate,
-            date: new Date().toLocaleString(),
-          };  //전송 데이터(JSON)
-          const temp = JSON.stringify(data);
-          props.ws.current.send(temp);
+      // 해당 없을 경우 착수
+      if (coordinate !== "") {
+        const data = {  // 이름, 메시지, 날짜 저장
+          topic: 'game',
+          color,
+          coordinate,
+          date: new Date().toLocaleString(),
+        };  //전송 데이터(JSON)
+        const temp = JSON.stringify(data);
+        props.ws.current.send(temp);
 
-        }
-        // else {
-        //   alert("바둑돌을 놓으세요.");
-        //   document.getElementById("coordinate").focus();
-        //   return;
-        // }
+      }
 
-      } // 이미 값이 있을경우 뭐 하려면 else 문 넣기
+    } // 이미 값이 있을경우 뭐 하려면 else 문 넣기
 
 
   }, [coordinate])
+
+
+  useEffect(() => {
+    if (finish) {
+      const data = {  // 이름, 메시지, 날짜 저장
+        topic: 'finish',
+        color
+      };  //전송 데이터(JSON)
+      const temp = JSON.stringify(data);
+      props.ws.current.send(temp);
+    }
+  }, [finish]);
 
   // useEffect(() => {   // 채팅이 계속 이어지도록 하는 이펙트
   //   if (socketData !== undefined) {
@@ -186,7 +217,8 @@ function Game(props) {
   return (
     <Box>
       <GlobalStyle/>
-      <Pan coordinate={setCoordinate} gaming={props.gaming} color={color} gameArr={props.chatt.filter(item => item.topic === "game" ? item : "")}/>
+      <Pan coordinate={setCoordinate} gaming={props.gaming} color={color}
+           gameArr={props.chatt.filter(item => item.topic === "game" ? item : "")}/>
     </Box>
   )
 }

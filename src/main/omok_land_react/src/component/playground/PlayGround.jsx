@@ -2,7 +2,7 @@ import React, {useEffect, useRef, useState} from 'react';
 import Chat from "./Chat";
 import {useLocation, useParams} from "react-router-dom";
 import Game from "./Game";
-import ReQuit from "./ReQuit";
+
 import Tool from "./Tool";
 import {Box} from "@mui/material";
 
@@ -12,6 +12,7 @@ function PlayGround(props) {
   const [socketData, setSocketData] = useState();
   const [chatt, setChatt] = useState([]);
   const [color, setColor] = useState('black');
+  const [name, setName] = useState();
 
   // 선공후공 결정 (테스트용)
   const [turn, setTurn] = useState()
@@ -34,7 +35,7 @@ function PlayGround(props) {
 
       const tempData = chatt.concat(socketData);
       setChatt(tempData);
-
+      // console.log(tempData);
       if(!gaming && tempData.filter(item => item.msg === 'join' ? item : "").length === 2){
         setGaming(true)
       }
@@ -51,9 +52,9 @@ function PlayGround(props) {
         <div className={'col-sm-6'} style={{zIndex : 1}}>
           <Game gaming={gaming} ws={ws} chatt={chatt} socketData={socketData} turn={turn}/>
         </div>
-        <div className={'col-sm-4'} style={{zIndex : 9999}}>
-          <Tool/>
-          <Chat gaming={setGaming} ip={param.ip} ws={ws} chatt={chatt} socketData={socketData} turn={setTurn} />
+        <div className={'col-sm-4'} style={{zIndex : 3}}>
+          <Tool ip={param.ip} ws={ws} chatt={chatt} socketData={socketData} name={name}/>
+          <Chat gaming={setGaming} ip={param.ip} ws={ws} chatt={chatt} socketData={socketData} turn={setTurn} name={setName}/>
         </div>
         <div className={'col-sm-1'}></div>
       </div>
