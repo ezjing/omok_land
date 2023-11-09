@@ -160,6 +160,7 @@ function Game(props) {
 
         // 왼쪽
         console.log(garo)
+        // asd
         console.log(coordinate)
         // 중간
 
