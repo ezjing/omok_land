@@ -34,7 +34,9 @@ function Game(props) {
 
   useEffect(() => {
     // 임시
-    if(props.chatt.length > 0) setColor(props.chatt.filter(item => item.msg === 'join')[0].name === props.turn ? 'black' : 'white');
+    if(props.chatt.length > 0) {
+      setColor(props.chatt.filter(item => item.msg === 'join')[0].name === props.turn ? 'black' : 'white')
+    }
   }, [props.chatt]);
 
   useEffect(() => {
@@ -44,74 +46,102 @@ function Game(props) {
 
       if (props.chatt.filter(item => item.topic === "game" ? item : "").length > 0) {
 
-        setChatt(props.chatt.filter(item => item.topic === "game"))
         // 좌표 분리
         let [x, y] = coordinate.split(', ').map(item => +item);
 
-        // 착수의 가로줄 배열
-        let garo = chatt.filter(item => +item.coordinate.slice(item.coordinate.indexOf(', ')) === y)
-        .sort((a, b) => +b.coordinate.slice(0, b.coordinate.indexOf(',')) - +a.coordinate.slice(0, b.coordinate.indexOf(',')));
+        // 승리 조건 확인을 위한 15x1 빈 배열 생성
+        let garo = Array(15).fill(Array(`0, ${coordinate.split(', ')[1]}`, 'empty'));
+        let sero = Array(15).fill(Array(`${coordinate.split(', ')[0]}, 0`, 'empty'));
 
-        // 착수의 세로줄 배열
-        let sero = chatt.filter(item => +item.coordinate.slice(0, item.coordinate.indexOf(',')) === x)
-        .sort((a, b) => +b.coordinate.slice(b.coordinate.indexOf(', ') + 2) - +a.coordinate.slice(0, b.coordinate.indexOf(', ') + 2));
+        // 좌표의 좌상우하 대각선
+        let daegak1 = [];
+        for (let x = +coordinate.split(', ')[0], y = +coordinate.split(', ')[1]; x >= 0 && y >= 0; x--, y--) {
+          daegak1.push([`${x}, ${y}`, 'empty']);
+        }
+        for (let x = +coordinate.split(', ')[0] + 1, y = +coordinate.split(', ')[1] + 1; x < 15 && y < 15; x++, y++) {
+          daegak1.push([`${x}, ${y}`, 'empty']);
+        }
 
-        // 착수의 좌상 우하 대각선 배열
-        let daegak1 = chatt.filter(item => {
-          let [x1, y1] = item.coordinate.split(', ').map(Number);
-          return Math.abs(x1 - x) === Math.abs(y1 - y);
-        }).sort((a, b) => {
-          let [x1, y1] = a.coordinate.split(', ').map(Number);
-          let [x2, y2] = b.coordinate.split(', ').map(Number);
-          return y2 - y1;
-        });
+        // 좌표의 좌하우상 대각선
+        let daegak2 = [];
+        for (let x = +coordinate.split(', ')[0], y = +coordinate.split(', ')[1]; x >= 0 && y < 15; x--, y++) {
+          daegak2.push([`${x}, ${y}`, 'empty']);
+        }
+        for (let x = +coordinate.split(', ')[0] + 1, y = +coordinate.split(', ')[1] - 1; x < 15 && y >= 0; x++, y--) {
+          daegak2.push([`${x}, ${y}`, 'empty']);
+        }
+        setChatt(props.chatt.filter(item => item.topic === "game"))
 
-        // 착수의 좌하 우상 대각선 배열
-        let daegak2 = chatt.filter(item => {
-          let [x1, y1] = item.coordinate.split(', ').map(Number);
-          return Math.abs(x1 - x) === Math.abs(y1 - y);
-        }).sort((a, b) => {
-          let [x1, y1] = a.coordinate.split(', ').map(Number);
-          let [x2, y2] = b.coordinate.split(', ').map(Number);
-          return y1 - y2;
-        });
+        // 인덱스 추출을 위한 좌표만 있는 배열
+        let filtered1 = daegak1.map(item => item[0]);
+        let filtered2 = daegak2.map(item => item[0]);
 
+        // 빈배열에 착수 기록 업데이트
+        props.chatt.filter(item1 => item1.topic === "game" ? item1 : "").map((item2) =>{
 
-        // 승리 조건
+          let [x1, y1] = item2.coordinate.split(', ')
+
+          if(+y1 === y) {
+            garo[x1] = [item2.coordinate, item2.color]
+          }
+          if(+x1 === x) {
+            sero[y1] = [item2.coordinate, item2.color]
+          }
+          if(filtered1.indexOf(item2.coordinate) !== -1){
+            daegak1[filtered1.indexOf(item2.coordinate)] = [item2.coordinate, item2.color];
+          }
+          if(filtered2.indexOf(item2.coordinate) !== -1) {
+            daegak2[filtered2.indexOf(item2.coordinate)] = [item2.coordinate, item2.color];
+          }
+        })
+
+        // 방금 누른 좌표 합치기, 대각선 배열 정렬
+        garo[coordinate.split(', ')[0]] = [coordinate, color]
+        sero[coordinate.split(', ')[1]] = [coordinate, color]
+        daegak1[0] = [coordinate, color]
+        daegak2[0] = [coordinate, color]
+        daegak1.sort((a,b) => a[0].split(', ')[0] - b[0].split(', ')[0]);
+        daegak2.sort((a,b) => a[0].split(', ')[0] - b[0].split(', ')[0]);
+
+        // console.log(garo)
+        // console.log(sero)
+        // console.log(daegak1)
+        // console.log(daegak2)
+
+        // 승리 조건 (완료)
         let cnt = 0;
-
         // 가로 검사
-        garo.map((item, idx) => {
-          item.color === color ? cnt++ : cnt = 0;
-          console.log(cnt)
+        garo.map((item) => {
+          item[1] === color ? cnt++ : cnt = 0;
           if (cnt === 5) {
-            // 정상 실행 확인
             alert('###################승리##################')
             // 승리 이후 루트 고민해야함
           }
         })
         // 세로 검사
-        sero.map((item, idx) => {
-          item.color === color ? cnt++ : cnt = 0;
-          console.log(cnt)
+        sero.map((item) => {
+          item[1] === color ? cnt++ : cnt = 0;
           if (cnt === 5) {
             alert('###################승리##################')
           }
         })
         // 대각선 검사
-        daegak1.map((item, idx) => {
-          item.color === color ? cnt++ : cnt = 0;
+        daegak1.map((item) => {
+          item[1] === color ? cnt++ : cnt = 0;
+          if (cnt === 5) {
+            alert('###################승리##################');
+          }
+        });
+        daegak2.map((item) => {
+          item[1] === color ? cnt++ : cnt = 0;
           if (cnt === 5) {
             alert('###################승리##################');
           }
         });
 
-        daegak2.map((item, idx) => {
-          item.color === color ? cnt++ : cnt = 0;
-          if (cnt === 5) {
-            alert('###################승리##################');
-          }
-        });
+        // 금수
+        
+        // 좌표 기준의 가로, 세로 대각선의 4칸까지 필터 해줘야함
 
       }
 
