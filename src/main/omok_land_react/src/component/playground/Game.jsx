@@ -154,34 +154,237 @@ function Game(props) {
           }
         });
 
-        // 금수
-
-        // 착수 좌표의 가로 상의 열린 3 카운트
-
+        // 열린3 초기화
+        let opened3 = 0;
+        // 좌표 기준 가로 열린 3 검사
         // 왼쪽
-        console.log(garo)
-        // asd
-        console.log(coordinate)
+        let filteredGaro1 = garo.filter(
+          (item, idx) => {
+            return (idx >= x - 3 && idx <= x+1 ? item : "")
+          })
+        if(filteredGaro1.length === 5) {
+          filteredGaro1.reduce((acc, cur, idx) => {
+            if (idx === 0 && cur[1] === 'empty') {
+              acc++
+            } else if (idx <= 3 && cur[1] === color) {
+              acc++
+            } else if (acc=== 4 && idx === 4 && cur[1] === 'empty'){
+              opened3++
+            }
+            return acc
+          }, 0)
+        }
         // 중간
-
+        let filteredGaro2 = garo.filter(
+          (item, idx) => {
+            return (idx >= x - 2 && idx <= x+2 ? item : "")
+          })
+        if(filteredGaro2.length === 5) {
+          filteredGaro2.reduce((acc, cur, idx) => {
+            if (idx === 0 && cur[1] === 'empty') {
+              acc++
+            } else if (idx <= 3 && cur[1] === color) {
+              acc++
+            } else if (acc=== 4 && idx === 4 && cur[1] === 'empty'){
+              opened3++
+            }
+            return acc
+          }, 0)
+        }
         // 오른쪽
+        let filteredGaro3 = garo.filter(
+          (item, idx) => {
+            return (idx >= x - 1 && idx <= x+3 ? item : "")
+          })
+        if(filteredGaro3.length === 5) {
+          filteredGaro3.reduce((acc, cur, idx) => {
+            if (idx === 0 && cur[1] === 'empty') {
+              acc++
+            } else if (idx <= 3 && cur[1] === color) {
+              acc++
+            } else if (acc=== 4 && idx === 4 && cur[1] === 'empty'){
+              opened3++
+            }
+            return acc
+          }, 0)
+        }
 
-        // 좌표 기준의 가로, 세로 대각선의 4칸까지 필터 해줘야함
+        // 좌표 기준 세로 열린 3 검사
+        // 위쪽
+        let filteredSero1 = sero.filter(
+          (item, idx) => {
+            return (idx >= y - 3 && idx <= y+1 ? item : "")
+          })
+        if(filteredSero1.length === 5) {
+          filteredSero1.reduce((acc, cur, idx) => {
+            if (idx === 0 && cur[1] === 'empty') {
+              acc++
+            } else if (idx <= 3 && cur[1] === color) {
+              acc++
+            } else if (acc=== 4 && idx === 4 && cur[1] === 'empty'){
+              opened3++
+            }
+            return acc
+          }, 0)
+        }
+        // 중간
+        let filteredSero2 = sero.filter(
+          (item, idx) => {
+            return (idx >= y - 2 && idx <= y+2 ? item : "")
+          })
+        if(filteredSero2.length === 5) {
+          filteredSero2.reduce((acc, cur, idx) => {
+            if (idx === 0 && cur[1] === 'empty') {
+              acc++
+            } else if (idx <= 3 && cur[1] === color) {
+              acc++
+            } else if (acc=== 4 && idx === 4 && cur[1] === 'empty'){
+              opened3++
+            }
+            return acc
+          }, 0)
+        }
+        // 아래쪽
+        let filteredSero3 = sero.filter(
+          (item, idx) => {
+            return (idx >= y - 1 && idx <= y+3 ? item : "")
+          })
+        if(filteredSero3.length === 5) {
+          filteredSero3.reduce((acc, cur, idx) => {
+            if (idx === 0 && cur[1] === 'empty') {
+              acc++
+            } else if (idx <= 3 && cur[1] === color) {
+              acc++
+            } else if (acc=== 4 && idx === 4 && cur[1] === 'empty'){
+              opened3++
+            }
+            return acc
+          }, 0)
+        }
 
+        //대각선
+        let filteredDaegak11 = daegak1.filter(
+          (item, idx) => {
+            return (item[0].split(', ')[0] >= x - 3 && item[0].split(', ')[0] <= x+1 ? item : "")
+          })
+        if(filteredDaegak11.length === 5) {
+          filteredDaegak11.reduce((acc, cur, idx) => {
+            if (idx === 0 && cur[1] === 'empty') {
+              acc++
+            } else if (idx <= 3 && cur[1] === color) {
+              acc++
+            } else if (acc=== 4 && idx === 4 && cur[1] === 'empty'){
+              opened3++
+            }
+            return acc
+          }, 0)
+        }
+        // 중간
+        let filteredDaegak12 = daegak1.filter(
+          (item, idx) => {
+            return (item[0].split(', ')[0] >= x - 2 && item[0].split(', ')[0] <= x+2 ? item : "")
+          })
+        if(filteredDaegak12.length === 5) {
+          filteredDaegak12.reduce((acc, cur, idx) => {
+            if (idx === 0 && cur[1] === 'empty') {
+              acc++
+            } else if (idx <= 3 && cur[1] === color) {
+              acc++
+            } else if (acc=== 4 && idx === 4 && cur[1] === 'empty'){
+              opened3++
+            }
+            return acc
+          }, 0)
+        }
+        // 오른쪽
+        let filteredDaegak13 = daegak1.filter(
+          (item, idx) => {
+            return (item[0].split(', ')[0] >= x - 1 && item[0].split(', ')[0] <= x+3 ? item : "")
+          })
+        if(filteredDaegak13.length === 5) {
+          filteredDaegak13.reduce((acc, cur, idx) => {
+            if (idx === 0 && cur[1] === 'empty') {
+              acc++
+            } else if (idx <= 3 && cur[1] === color) {
+              acc++
+            } else if (acc=== 4 && idx === 4 && cur[1] === 'empty'){
+              opened3++
+            }
+            return acc
+          }, 0)
+        }
+
+        let filteredDaegak21 = daegak2.filter(
+          (item, idx) => {
+            return (item[0].split(', ')[0] >= x - 3 && item[0].split(', ')[0] <= x+1 ? item : "")
+          })
+        if(filteredDaegak21.length === 5) {
+          filteredDaegak21.reduce((acc, cur, idx) => {
+            if (idx === 0 && cur[1] === 'empty') {
+              acc++
+            } else if (idx <= 3 && cur[1] === color) {
+              acc++
+            } else if (acc=== 4 && idx === 4 && cur[1] === 'empty'){
+              opened3++
+            }
+            return acc
+          }, 0)
+        }
+        // 중간
+        let filteredDaegak22 = daegak2.filter(
+          (item, idx) => {
+            return (item[0].split(', ')[0] >= x - 2 && item[0].split(', ')[0] <= x+2 ? item : "")
+          })
+        if(filteredDaegak22.length === 5) {
+          filteredDaegak22.reduce((acc, cur, idx) => {
+            if (idx === 0 && cur[1] === 'empty') {
+              acc++
+            } else if (idx <= 3 && cur[1] === color) {
+              acc++
+            } else if (acc=== 4 && idx === 4 && cur[1] === 'empty'){
+              opened3++
+            }
+            return acc
+          }, 0)
+        }
+        // 오른쪽
+        let filteredDaegak23 = daegak2.filter(
+          (item, idx) => {
+            return (item[0].split(', ')[0] >= x - 1 && item[0].split(', ')[0] <= x+3 ? item : "")
+          })
+        if(filteredDaegak23.length === 5) {
+          filteredDaegak23.reduce((acc, cur, idx) => {
+            if (idx === 0 && cur[1] === 'empty') {
+              acc++
+            } else if (idx <= 3 && cur[1] === color) {
+              acc++
+            } else if (acc=== 4 && idx === 4 && cur[1] === 'empty'){
+              opened3++
+            }
+            return acc
+          }, 0)
+        }
+
+        console.log(opened3)
+        if(opened3 === 2) {
+          alert('금수입니다.')
+        }else{
+          // 해당 없을 경우 착수
+          if (coordinate !== "") {
+            const data = {  // 이름, 메시지, 날짜 저장
+              topic: 'game',
+              color,
+              coordinate,
+              date: new Date().toLocaleString(),
+            };  //전송 데이터(JSON)
+            const temp = JSON.stringify(data);
+            props.ws.current.send(temp);
+
+          }
+        }
       }
 
-      // 해당 없을 경우 착수
-      if (coordinate !== "") {
-        const data = {  // 이름, 메시지, 날짜 저장
-          topic: 'game',
-          color,
-          coordinate,
-          date: new Date().toLocaleString(),
-        };  //전송 데이터(JSON)
-        const temp = JSON.stringify(data);
-        props.ws.current.send(temp);
 
-      }
 
     } // 이미 값이 있을경우 뭐 하려면 else 문 넣기
 
