@@ -4,6 +4,8 @@ import reset from 'styled-reset';
 import '../../static/css/chat.css';
 import InsertEmoticonIcon from '@mui/icons-material/InsertEmoticon';
 import {Box, Button, Fab, Popover} from "@mui/material";
+import Modalss from "./Modalss";
+import ReQuit from "./ReQuit";
 
 function Chat(props) {
   const [msg, setMsg] = useState("");
@@ -348,7 +350,7 @@ function Chat(props) {
           </div>
         </div>
       </div>
-      {/*<ReQuit ip={ip} name={name} ws={props.ws} chatt={props.chatt} socketData={props.socketData}/>*/}
+      <ReQuit ip={ip} name={name} ws={props.ws} chatt={props.chatt} socketData={props.socketData}/>
 
     </>
   );

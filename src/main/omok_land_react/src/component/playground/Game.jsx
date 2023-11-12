@@ -181,6 +181,8 @@ function Game(props) {
         const temp = JSON.stringify(data);
         props.ws.current.send(temp);
 
+        // 타이머 시간 초기화
+
       }
 
     } // 이미 값이 있을경우 뭐 하려면 else 문 넣기

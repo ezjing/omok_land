@@ -53,7 +53,7 @@ function PlayGround(props) {
           <Game gaming={gaming} ws={ws} chatt={chatt} socketData={socketData} turn={turn}/>
         </div>
         <div className={'col-sm-4'} style={{zIndex : 3}}>
-          <Tool ip={param.ip} ws={ws} chatt={chatt} socketData={socketData} name={name}/>
+          <Tool ip={param.ip} ws={ws} chatt={chatt} socketData={socketData} name={name} />
           <Chat gaming={setGaming} ip={param.ip} ws={ws} chatt={chatt} socketData={socketData} turn={setTurn} name={setName}/>
         </div>
         <div className={'col-sm-1'}></div>

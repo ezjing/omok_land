@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {Box, createTheme, IconButton, Stack, ThemeProvider} from "@mui/material";
 import Timer from "../main/Timer";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
@@ -10,6 +10,7 @@ import FlagIcon from '@mui/icons-material/Flag';
 
 function Tool(props) {
     const [play, setPlay] = useState(false);    // 기본값 false로 바꾸고 경기 시작될때 true 되도록 수정
+    const [first, setFirst] = useState(0);
 
     const theme = createTheme({
         palette: {
@@ -21,6 +22,18 @@ function Tool(props) {
             },
         },
     });
+
+    useEffect(() => {
+        if ( props.chatt.length > 0 && props.chatt[props.chatt.length-1].topic === 'game' && first == 0) {
+            setPlay(true);
+            const audio = document.getElementById('myAudio');
+            audio.play();
+            setFirst(1);
+        }
+
+    }, [props.chatt]);
+
+
 
     const handlePlay = () => {
         const audio = document.getElementById('myAudio');
@@ -74,7 +87,7 @@ function Tool(props) {
     return (
         <Stack spacing={2} direction={'row'}
                sx={{marginY: 2, display: 'flex', justifyContent: 'space-between', width: '80%'}}>
-            <Timer theme={theme}></Timer>
+            <Timer theme={theme} ws={props.ws} chatt={props.chatt} socketData={props.socketData}></Timer>
             <Box>
                 <ThemeProvider theme={theme}>
                     <AudiotrackIcon sx={{alignSelf: 'center'}} color={'bluegray'}></AudiotrackIcon>
