@@ -32,12 +32,13 @@ function Game(props) {
 
 
   }, []);
-
+  
   useEffect(() => {
     // 임시
     if (props.chatt.length > 0) {
 
       setColor(props.chatt.filter(item => item.msg === 'join')[0].name === props.turn ? 'black' : 'white')
+      props.color(color);
 
       if (props.chatt.filter(item => item.topic === 'finish' ? item : "").length > 0) {
         let winner = props.chatt.filter(item => item.topic === 'finish' ? item : "")[0].color
@@ -379,10 +380,10 @@ function Game(props) {
             };  //전송 데이터(JSON)
             const temp = JSON.stringify(data);
             props.ws.current.send(temp);
-
           }
         }
       }
+      
 
 
 

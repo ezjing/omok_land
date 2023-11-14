@@ -109,6 +109,12 @@ function Chat(props) {
         document.getElementById("name").focus();
         return;
       }
+      else if (props.socketData !== undefined && name === props.socketData.name) {
+        alert("동일한 닉네임은 사용할 수 없습니다.");
+        document.getElementById("name").focus();
+        return;
+      }
+      
       setChkLog(true);
 
       const data = {

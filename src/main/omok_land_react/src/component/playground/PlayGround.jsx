@@ -50,10 +50,10 @@ function PlayGround(props) {
       <div className={'row'}>
         <div className={'col-sm-1'}></div>
         <div className={'col-sm-6'} style={{zIndex : 1}}>
-          <Game gaming={gaming} ws={ws} chatt={chatt} socketData={socketData} turn={turn}/>
+          <Game gaming={gaming} ws={ws} chatt={chatt} socketData={socketData} turn={turn} color={setColor}/>
         </div>
         <div className={'col-sm-4'} style={{zIndex : 3}}>
-          <Tool ip={param.ip} ws={ws} chatt={chatt} socketData={socketData} name={name}/>
+          <Tool ip={param.ip} ws={ws} chatt={chatt} socketData={socketData} name={name} color={color}/>
           <Chat gaming={setGaming} ip={param.ip} ws={ws} chatt={chatt} socketData={socketData} turn={setTurn} name={setName}/>
         </div>
         <div className={'col-sm-1'}></div>
