@@ -4,7 +4,7 @@ import reset from "styled-reset";
 import {Box, Button} from "@mui/material";
 import Pan from "./Pan";
 import {useParams} from "react-router-dom";
-import axios from "axios";
+
 
 function Game(props) {
   const param = useParams();
@@ -44,22 +44,22 @@ function Game(props) {
         let winner = props.chatt.filter(item => item.topic === 'finish' ? item : "")[0].color
         if (winner === color) {
           // 승리 루트
-          alert(`승리 : ${color}`)
+
         } else if (winner !== color) {
           // 패배 루트
-          alert(`패배 : ${color}`)
         }
       }
     }
   }, [props.chatt]);
 
   useEffect(() => {
+    // 금수 체크용 변수
+    let gumsu = 0;
 
     // 좌표 클릭시 이벤트
     if (props.gaming) {
 
       if (props.chatt.filter(item => item.topic === "game" ? item : "").length > 0) {
-
         // 좌표 분리
         let [x, y] = coordinate.split(', ').map(item => +item);
 
@@ -369,18 +369,9 @@ function Game(props) {
         console.log(opened3)
         if(opened3 === 2) {
           alert('금수입니다.')
+          gumsu = 1
         }
         // 해당 없을 경우 착수
-        else if (coordinate !== "") {
-          const data = {  // 이름, 메시지, 날짜 저장
-            topic: 'game',
-            color,
-            coordinate,
-            date: new Date().toLocaleString(),
-          };  //전송 데이터(JSON)
-          const temp = JSON.stringify(data);
-          props.ws.current.send(temp);
-        }
 
       }
       
@@ -388,6 +379,17 @@ function Game(props) {
 
 
     } // 이미 값이 있을경우 뭐 하려면 else 문 넣기
+
+    if (coordinate !== "" && gumsu === 0) {
+      const data = {  // 이름, 메시지, 날짜 저장
+        topic: 'game',
+        color,
+        coordinate,
+        date: new Date().toLocaleString(),
+      };  //전송 데이터(JSON)
+      const temp = JSON.stringify(data);
+      props.ws.current.send(temp);
+    }
 
 
   }, [coordinate])

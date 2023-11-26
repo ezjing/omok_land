@@ -4,7 +4,7 @@ import Chat from "./component/playground/Chat";
 import Main from "./component/main/Main";
 import Pan from "./component/playground/Pan";
 import {BrowserRouter, Route, Routes} from "react-router-dom";
-import Timer from "./component/main/Timer";
+import Timer from "./component/playground/Timer";
 import Game from "./component/playground/Game";
 import PlayGround from "./component/playground/PlayGround";
 

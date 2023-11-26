@@ -9,7 +9,7 @@ import {
   Stack,
   ThemeProvider, Typography
 } from "@mui/material";
-import Timer from "../main/Timer";
+import Timer from "./Timer";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import PauseIcon from "@mui/icons-material/Pause";
 import AudiotrackIcon from '@mui/icons-material/Audiotrack'
@@ -25,6 +25,7 @@ function Tool(props) {
   const [result, setResult] = useState(true);
   const [result2, setResult2] = useState(false);
   const [result3, setResult3] = useState(true);
+  const [first, setFirst] = useState(0);
   const [ws, setWs] = useState(props.ws);
   const navi = useNavigate();
   
@@ -51,6 +52,14 @@ function Tool(props) {
       //   setResult(false);
       // }
       
+    }
+
+    // 오디오 재생 조건문
+    if ( props.chatt.length > 0 && props.chatt[props.chatt.length-1].topic === 'game' && first == 0) {
+      setPlay(true);
+      const audio = document.getElementById('myAudio');
+      audio.play();
+      setFirst(1);
     }
   }, [props.chatt])
   
@@ -230,7 +239,7 @@ function Tool(props) {
   return (
     <div>
       <Stack spacing={2} direction={'row'} sx={{marginY: 2, display: 'flex', justifyContent: 'space-between', width: '80%'}}>
-        <Timer theme={theme}></Timer>
+        <Timer theme={theme} ws={props.ws} chatt={props.chatt} socketData={props.socketData} color={props.color}></Timer>
         <Box>
           <ThemeProvider theme={theme}>
             <AudiotrackIcon sx={{alignSelf: 'center'}} color={'bluegray'}></AudiotrackIcon>
@@ -273,7 +282,60 @@ function Tool(props) {
                   onClick={() => setVisible(false)}>아니오</Button>
         </DialogActions>
       </Dialog>
-      
+
+    {/*  승부 결과 창*/}
+      {
+        props.chatt
+        .filter(item => item.topic === 'finish')
+        .map((item, idx) => (
+          item.color === props.color ?
+            <div key={idx}>
+              <Dialog open={result} onClose={() => setResult(false)}>
+                <DialogContent>
+                  <DialogContentText id="alert-dialog-description">
+                    <Stack spacing={5} direction={'row'} sx={{
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      paddingY: 2,
+                    }}>
+                      <img src={props.color === 'black' ? "/img/main/blackStone.png" : "/img/main/whiteStone.png"} alt="" className={'w-25 h-25'}/>
+                      <Typography variant="h3" color={'blue'}><h1><b>YOU WIN !!</b></h1></Typography>
+                    </Stack>
+                  </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                  <Button className={'game-re'} variant="contained" color="success"
+                          onClick={winnerYes}>확인</Button>
+                  <Button className={'game-exit'} variant="contained" color="error"
+                          onClick={exit}>나가기</Button>
+                </DialogActions>
+              </Dialog>
+            </div>
+            :
+            <div key={idx}>
+              <Dialog open={result} onClose={() => setResult(false)}>
+                <DialogContent>
+                  <DialogContentText id="alert-dialog-description">
+                    <Stack spacing={5} direction={'row'} sx={{
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      paddingY: 2,
+                    }}>
+                      <img src={props.color === 'black' ? "/img/main/blackStone.png" : "/img/main/whiteStone.png"} alt="" className={'w-25 h-25'}/>
+                      <Typography variant="h3" color={'red'}><h1><b>YOU LOSE</b></h1></Typography>
+                    </Stack>
+                  </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                  <Button className={'game-re'} variant="contained" color="success"
+                          onClick={reGame}>재경기 요청</Button>
+                  <Button className={'game-exit'} variant="contained" color="error"
+                          onClick={exit}>나가기</Button>
+                </DialogActions>
+              </Dialog>
+            </div>
+        ))
+      }
     {/*  항복 결과 창*/}
       {
         props.chatt
