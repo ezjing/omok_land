@@ -369,19 +369,19 @@ function Game(props) {
         console.log(opened3)
         if(opened3 === 2) {
           alert('금수입니다.')
-        }else{
-          // 해당 없을 경우 착수
-          if (coordinate !== "") {
-            const data = {  // 이름, 메시지, 날짜 저장
-              topic: 'game',
-              color,
-              coordinate,
-              date: new Date().toLocaleString(),
-            };  //전송 데이터(JSON)
-            const temp = JSON.stringify(data);
-            props.ws.current.send(temp);
-          }
         }
+        // 해당 없을 경우 착수
+        else if (coordinate !== "") {
+          const data = {  // 이름, 메시지, 날짜 저장
+            topic: 'game',
+            color,
+            coordinate,
+            date: new Date().toLocaleString(),
+          };  //전송 데이터(JSON)
+          const temp = JSON.stringify(data);
+          props.ws.current.send(temp);
+        }
+
       }
       
 
