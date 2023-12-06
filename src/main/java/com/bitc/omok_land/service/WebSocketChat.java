@@ -23,38 +23,40 @@ public class WebSocketChat {
 
     @OnOpen
     public void onOpen(Session session) throws IOException {
-        System.out.println("session : " + session);
+//        System.out.println("session : " + session);
 
-        logger.info("open session : {}, clients={}", session.toString(), clients);
+//        logger.info("open session : {}, clients={}", session.toString(), clients);
         Map<String, List<String>> res = session.getRequestParameterMap();
-        logger.info("res={}", res);
+//        logger.info("res={}", res);
 
         if(!clients.contains(session)) {
             clients.add(session);
-            if (clients.contains(session))
-            logger.info("session open : {}", session);
+            if (clients.contains(session)) {
+
+            }
+//            logger.info("session open : {}", session);
 
         }
         else {
-            logger.info("이미 연결된 session");
+//            logger.info("이미 연결된 session");
         }
 
     }
 
     @OnMessage
     public void onMessage(String message, Session session) throws IOException {
-        logger.info("receive message : {}", message);
+//        logger.info("receive message : {}", message);
         dataList.add(message);
-        System.out.println(dataList);
+//        System.out.println(dataList);
         for (Session s : clients) {
-            logger.info("send data : {}", message);
+//            logger.info("send data : {}", message);
             s.getBasicRemote().sendText(message);
         }
     }
 
     @OnClose
     public void onClose(Session session) throws IOException {
-        logger.info("session close : {}", session);
+//        logger.info("session close : {}", session);
         clients.remove(session);
     }
 }

@@ -1,0 +1,17 @@
+{
+  "files": {
+    "main.css": "/static/css/main.200b36bb.css",
+    "main.js": "/static/js/main.3ba8cd82.js",
+    "static/js/787.edf32c25.chunk.js": "/static/js/787.edf32c25.chunk.js",
+    "static/media/omok.jpg": "/static/media/omok.d3f9ab7d3ec9077273a9.jpg",
+    "static/media/logo.svg": "/static/media/logo.6ce24c58023cc2f8fd88fe9d219db6c6.svg",
+    "index.html": "/index.html",
+    "main.200b36bb.css.map": "/static/css/main.200b36bb.css.map",
+    "main.3ba8cd82.js.map": "/static/js/main.3ba8cd82.js.map",
+    "787.edf32c25.chunk.js.map": "/static/js/787.edf32c25.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.200b36bb.css",
+    "static/js/main.3ba8cd82.js"
+  ]
+}

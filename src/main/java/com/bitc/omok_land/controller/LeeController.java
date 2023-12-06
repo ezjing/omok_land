@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.net.InetAddress;
 import java.util.Arrays;
-@CrossOrigin(value = "http://localhost:3000")
+@CrossOrigin(value = "http://3.39.195.198:8080")
 @RequiredArgsConstructor
 @RestController
 @RequestMapping(value = "/server")
@@ -19,6 +19,8 @@ public class LeeController {
     InetAddress ip = null;
     InetAddress[] ipArr = null;
 
+    int rooms = 0;
+
 //    @RequestMapping(value = "/test", method = RequestMethod.GET)
 //    public void test() throws Exception {
 //        System.out.println("test success");
@@ -26,6 +28,7 @@ public class LeeController {
 
     @RequestMapping(value = "/getIp", method = RequestMethod.GET)
     public String getIp() throws Exception {
+
 //        try {
 //            // 도메인명(host)을 통해서 IP주소를 반환합니다.
 //            ip = InetAddress.getByName("www.google.com");
@@ -51,14 +54,18 @@ public class LeeController {
 
         try {
             // 로컬 host의 IP주소를 반환합니다.
-            ip = InetAddress.getLocalHost();
+//            ip = InetAddress.getLocalHost();
+//
+//            System.out.println(ip.getHostName());
+//            // ex. 192.168.1.164
+//            System.out.println(ip.getHostAddress());
+//            System.out.println();
 
-            System.out.println(ip.getHostName());
-            // ex. 192.168.1.164
-            System.out.println(ip.getHostAddress());
-            System.out.println();
+            rooms++;
+            System.out.println("방갯수 : " + rooms);
 
-            return ip.getHostAddress();
+//            return ip.getHostAddress();
+            return Integer.toString(rooms);
         }
         catch (Exception e) {
             e.printStackTrace();

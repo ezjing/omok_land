@@ -158,13 +158,13 @@ function Tool(props) {
       ws.current.send(temp);
     }
     
-    navi('/main');
+    navi('/');
 
   }
   
   // 패자 재경기 요청 버튼
   const reGame = () => {
-    axios.get(`http://localhost:8080/server/getIp`) // ip 호출 axios
+    axios.get(`http://3.39.195.198:8080/server/getIp`) // ip 호출 axios
       .then(res => {
         console.log(res.data);
         const data = {
@@ -233,7 +233,7 @@ function Tool(props) {
     } else {
       ws.current.send(temp);
     }
-    navi('/main');
+    navi('/');
   }
   
   return (

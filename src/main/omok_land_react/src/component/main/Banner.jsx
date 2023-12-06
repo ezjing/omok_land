@@ -9,7 +9,7 @@ function Banner(props) {
   
   // playground로 넘길 ip주소 받아오기
   useEffect(() => {
-    axios.get(`http://localhost:8080/server/getIp`) // ip 호출 axios
+    axios.get(`http://3.39.195.198:8080/server/getIp`) // ip 호출 axios
       .then(res => {
         console.log(res.data);
         setIp(res.data);

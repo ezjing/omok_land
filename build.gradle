@@ -34,3 +34,67 @@ dependencies {
 tasks.named('test') {
 	useJUnitPlatform()
 }
+
+// 리액트 프로젝트 포함하기
+
+// 변수 선언 및 리액트 프로젝트 폴더 설정
+// $projectDir : 스프링 프로젝트를 뜻함(현재 프로젝트)
+def frontendDir = "$projectDir/src/main/omok_land_react";
+
+// 리액트 프로젝트가 복사될 위치 설정
+sourceSets {
+    main {
+        resources {
+            srcDirs = ["$projectDir/src/main/resources"]
+        }
+    }
+}
+//
+processResources {
+    dependsOn "copyReactBuildFiles"
+}
+
+// 리액트 프로젝트 인스톨
+task installReact(type: Exec) {
+    workingDir "$frontendDir"
+    inputs.dir "$frontendDir"
+    group = BasePlugin.BUILD_GROUP
+
+//// 리액트 모듈 다운로드
+    if (System.getProperty('os.name').toLowerCase(Locale.ROOT).contains('windows')) {
+        commandLine "npm.cmd", "audit", "fix"
+        commandLine "npm.cmd", "install"
+    } else {
+        commandLine "npm", "audit", "fix"
+        commandLine "npm", "install"
+    }
+
+}
+
+// 리액트 프로젝트 빌드
+task buildReact(type: Exec) {
+    // 해당명령 실행 후 동작
+    dependsOn "installReact"
+    workingDir "$frontendDir"
+    inputs.dir "$frontendDir"
+    group = BasePlugin.BUILD_GROUP
+
+// 리액트 프로젝트 빌드 명령
+    if (System.getProperty("os.name").toLowerCase(Locale.ROOT).contains("windows")) {
+        commandLine "npm.cmd", "run-script", "build"
+    } else {
+        commandLine "npm", "run-script", "build"
+    }
+}
+
+// 빌드된 리액트 프로젝트를 스프링 프로젝트로 복사
+task copyReactBuildFiles(type: Copy) {
+    dependsOn "buildReact"
+    from "$frontendDir/build"
+    into "$projectDir/src/main/resources/static"
+}
+
+// bootJar 명령 실행 시 아래 명령 실행
+tasks.bootJar {
+    dependsOn "copyReactBuildFiles"
+}

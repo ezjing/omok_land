@@ -59,6 +59,7 @@ function Main(props) {
                         </Link>
                 }
             </Box>
+
             <Banner/>
         </Box>
     )

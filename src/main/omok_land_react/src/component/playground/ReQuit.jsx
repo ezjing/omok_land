@@ -23,7 +23,7 @@ function ReQuit(props) {
   
   // 재경기 요청
   const reGame = () => {
-    axios.get(`http://localhost:8080/server/getIp`) // ip 호출 axios
+    axios.get(`http://3.39.195.198:8080/server/getIp`) // ip 호출 axios
       .then(res => {
         console.log(res.data);
         setIp(res.data);

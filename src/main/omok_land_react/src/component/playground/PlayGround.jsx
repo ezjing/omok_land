@@ -23,7 +23,7 @@ function PlayGround(props) {
   const ws = useRef();
 
   useEffect(() => {
-    ws.current = new WebSocket("ws://localhost:8080/socket/chatt/" + param.ip);
+    ws.current = new WebSocket("ws://3.39.195.198:8080/socket/chatt/" + param.ip);
     ws.current.onmessage = (message) => {
       const dataSet = JSON.parse(message.data);
       setSocketData(dataSet);
@@ -35,7 +35,7 @@ function PlayGround(props) {
 
       const tempData = chatt.concat(socketData);
       setChatt(tempData);
-      // console.log(tempData);
+      console.log(tempData);
       if(!gaming && tempData.filter(item => item.msg === 'join' ? item : "").length === 2){
         setGaming(true)
       }
